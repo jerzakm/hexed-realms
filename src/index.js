@@ -2,6 +2,7 @@ import { HexMap } from "./hexMap/hexMap";
 
 
 const PIXI = require('pixi.js')
+const loader = PIXI.Loader.shared;
 const Viewport = require('pixi-viewport')
 const UserPlugin = require('pixi-viewport')
 const dat = require('dat.gui')
@@ -17,15 +18,11 @@ let options = {
 
 app = new PIXI.Application({ transparent: true, width: window.innerWidth, height: window.innerHeight, resolution: window.devicePixelRatio })
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
+app.view.setAttribute(oncontextmenu,"return false")
 document.body.appendChild(app.view)
 app.view.style.position = 'fixed'
 app.view.style.width = '100vw'
 app.view.style.height = '100vh'
-
-makeWorldViewport()
-resize()
-window.addEventListener('resize', resize)
-drawWorld()
 
 function makeWorldViewport()
 {
@@ -68,14 +65,29 @@ function drawWorld()
     viewport.moveCorner(0, 0)
     viewport.fitWorld()
     border()
-    //createGui()
     let hexMap = new HexMap()
         .setHexSize(options.hexSize)
         .setFlat(options.flat)
         .setWorldSize(options.worldWidth, options.worldHeight)
         .align()
         .setup()
-        .drawPoly();
+        .drawPolyMap()
+        .drawSpriteMap();
     viewport.addChild(hexMap)
 
 }
+
+function loadAndDraw() {
+    loader
+  .add("grass", "assets/grass.png")
+  .add("desert", "assets/desert.png")
+  .add("ocean", "assets/water.png")
+  .load(drawWorld);
+}
+
+
+makeWorldViewport()
+resize()
+window.addEventListener('resize', resize)
+loadAndDraw()
+createGui()

@@ -1,4 +1,5 @@
 const PIXI = require('pixi.js')
+const loader = PIXI.Loader.shared;
 import { calcHexPoints, calcHexLocation } from "./hexMath";
 import { Hex, HexPoly, HexSprite } from "./hex";
 import { randomColor } from "../util/random";
@@ -34,7 +35,7 @@ export class HexMap extends PIXI.Container {
         return this
     }
     setFlat(flat){
-        this.flat=flat
+        this.flat=JSON.parse(flat)
         return this
     }
     getHexMapSize(){
@@ -59,25 +60,31 @@ export class HexMap extends PIXI.Container {
         return this
     }
 
-    drawPoly(){
+    drawPolyMap(){
         const hexPointsPrecalc = calcHexPoints(this.r,this.h, this.flat)
-        for (let i = 0; i < this.wCount; i++) {
-            for (let j = 0; j < this.hCount; j++) {
-                let loc =  calcHexLocation(i,j,this.r,this.h,this.flat)
-                let hex = new HexPoly(i,j)
-                hex.beginFill(randomColor())
-                hex.setPoints(hexPointsPrecalc)
-                hex.draw()
-                hex.endFill()
-                hex.interactive = true
-                hex.buttonMode = true
-                hex.x = loc.x
-                hex.y = loc.y
-                let sprite = new PIXI.Sprite.from('assets/desert.png')
-                const scale = ((2*this.r)/sprite.width)
-                sprite.setTransform(hex.x-this.r,hex.y-this.r-9*scale,scale,scale)
-                this.addChild(hex)
-            }
+        for(let hex of this.hexArray) {
+            let polyHex = hex.drawPoly({
+                fill: randomColor(),
+                points: hexPointsPrecalc,
+                loc: calcHexLocation(hex.options.cx,hex.options.cy,this.r,this.h,this.flat)
+
+            })
+            this.addChild(polyHex);
+        }
+        return this
+    }
+    drawSpriteMap(){
+        let sprite = new PIXI.Sprite(loader.resources['desert'].texture)
+        const scale = ((2*this.r)/sprite.width)
+        for(let hex of this.hexArray) {
+            let spriteHex = hex.drawSprite({
+                loc: calcHexLocation(hex.options.cx,hex.options.cy,this.r,this.h,this.flat),
+                scale: scale,
+                xTransform: 0,
+                yTransform: -6*scale
+
+            })
+            this.addChild(spriteHex);
         }
         return this
     }
