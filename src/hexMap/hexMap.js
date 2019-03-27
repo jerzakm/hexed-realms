@@ -1,8 +1,9 @@
 const PIXI = require('pixi.js')
 const loader = PIXI.Loader.shared;
-import { calcHexPoints, calcHexLocation } from "./hexMath";
-import { Hex, HexPoly, HexSprite } from "./hex";
-import { randomColor } from "../util/random";
+import { calcHexPoints, calcHexLocation } from './hexMath'
+import { Hex } from './hex'
+import { randomColor } from '../util/random'
+import { mapGen } from './terrainGen'
 
 
 export class HexMap extends PIXI.Container {
@@ -45,31 +46,33 @@ export class HexMap extends PIXI.Container {
         }
         return mapSize
     }
+    generateWorld(){
+        mapGen(this.hexArray)
+        return this
+    }
 
     setup(){
         for (let i = 0; i < this.wCount; i++) {
             for (let j = 0; j < this.hCount; j++) {
                 let hex = new Hex({
                     cx:i,
-                    cy:j
+                    cy:j,
+                    loc: calcHexLocation(i,j,this.r,this.h,this.flat)
                 })
                 this.hexArray.push(hex)
             }
         }
-        console.log(this.hexArray)
         return this
     }
 
     drawPolyMap(){
         const hexPointsPrecalc = calcHexPoints(this.r,this.h, this.flat)
         for(let hex of this.hexArray) {
-            let polyHex = hex.drawPoly({
+            hex.drawPoly({
                 fill: randomColor(),
-                points: hexPointsPrecalc,
-                loc: calcHexLocation(hex.options.cx,hex.options.cy,this.r,this.h,this.flat)
-
+                points: hexPointsPrecalc
             })
-            this.addChild(polyHex);
+            this.addChild(hex);
         }
         return this
     }
@@ -77,14 +80,12 @@ export class HexMap extends PIXI.Container {
         let sprite = new PIXI.Sprite(loader.resources['desert'].texture)
         const scale = ((2*this.r)/sprite.width)
         for(let hex of this.hexArray) {
-            let spriteHex = hex.drawSprite({
-                loc: calcHexLocation(hex.options.cx,hex.options.cy,this.r,this.h,this.flat),
+            hex.drawSprite({
                 scale: scale,
                 xTransform: 0,
                 yTransform: -6*scale
-
             })
-            this.addChild(spriteHex);
+            this.addChild(hex);
         }
         return this
     }

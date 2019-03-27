@@ -1,11 +1,7 @@
 const PIXI = require('pixi.js')
 const loader = PIXI.Loader.shared;
+import {TERRAIN} from './terrainGen'
 
-const terrain = {
-    DESERT: 'desert',
-    GRASSLAND: 'grass',
-    OCEAN: 'ocean'
-}
 
 export class HexPoly extends PIXI.Graphics {
     constructor(options){
@@ -23,15 +19,18 @@ export class HexSprite extends PIXI.Sprite {
     }
 }
 
-export class Hex {
+export class Hex extends PIXI.Container{
     constructor(options) {
+        super()
         this.options = this.defaults()
         this.options = Object.assign(this.options, options)
+        this.x = this.options.loc.x
+        this.y = this.options.loc.y
     }
 
     defaults(){
         return {
-            terrain: terrain.OCEAN,
+            terrain: TERRAIN.water,
             cx: 0,
             cy: 0,
             r: 10
@@ -39,28 +38,27 @@ export class Hex {
     }
 
     drawPoly(options){
-        this.hexPoly = new PIXI.Graphics
-        this.hexPoly.beginFill(options.fill)
-        this.hexPoly.x = options.loc.x
-        this.hexPoly.y = options.loc.y
-        this.hexPoly.drawPolygon(options.points)
-        this.hexPoly.endFill()
-        return this.hexPoly
+        const hexPoly = new PIXI.Graphics
+        hexPoly.beginFill(options.fill)
+        hexPoly.drawPolygon(options.points)
+        hexPoly.endFill()
+        this.addChild(hexPoly)
+        this.hexPoly=hexPoly
+        return this
     }
     drawSprite(options){
-        this.hexSprite = new PIXI.Sprite(loader.resources[this.options.terrain].texture)
-        this.hexSprite.anchor.set(0.5)
-        this.hexSprite.setTransform(0,0,options.scale,options.scale)
-        this.hexSprite.x = options.loc.x + options.xTransform
-        this.hexSprite.y = options.loc.y + options.yTransform
-        this.hexSprite.buttonMode = true
-        this.hexSprite.interactive = true
-        this.hexSprite.on('pointerdown', function(){
-            this.texture = loader.resources.desert.texture
+        let hexSprite = new PIXI.Sprite(loader.resources[this.options.terrain].texture)
+        hexSprite.anchor.set(0.5)
+        hexSprite.setTransform(0,0,options.scale,options.scale)
+        hexSprite.x = options.xTransform
+        hexSprite.y = options.yTransform
+        hexSprite.buttonMode = true
+        hexSprite.interactive = true
+        //hexSprite.hitArea = new PIXI.Polygon(this.hexPoly.geometry.points)
+        hexSprite.on('pointerdown', () => {
+            //hexSprite.texture = loader.resources.desert.texture
         })
-
-
-
-        return this.hexSprite
+        this.addChild(hexSprite)
+        return this
     }
 }

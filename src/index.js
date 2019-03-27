@@ -1,4 +1,5 @@
 import { HexMap } from "./hexMap/hexMap";
+import {TERRAIN} from './hexMap/terrainGen'
 
 
 const PIXI = require('pixi.js')
@@ -9,8 +10,8 @@ const dat = require('dat.gui')
 let app, viewport
 
 let options = {
-    worldWidth: 2000,
-    worldHeight: 1200,
+    worldWidth: 4000,
+    worldHeight: 2200,
     hexSize: 40,
     flat: true,
     render: drawWorld
@@ -71,18 +72,18 @@ function drawWorld()
         .setWorldSize(options.worldWidth, options.worldHeight)
         .align()
         .setup()
-        .drawPolyMap()
-        .drawSpriteMap();
+        .generateWorld()
+        //.drawPolyMap()
+        .drawSpriteMap()
     viewport.addChild(hexMap)
 
 }
 
 function loadAndDraw() {
-    loader
-  .add("grass", "assets/grass.png")
-  .add("desert", "assets/desert.png")
-  .add("ocean", "assets/water.png")
-  .load(drawWorld);
+    for(let type of Object.entries(TERRAIN)) {
+        loader.add(`${type[0]}`,`assets/${type[0]}.png`)
+    }
+    loader.load(drawWorld)
 }
 
 
@@ -90,4 +91,4 @@ makeWorldViewport()
 resize()
 window.addEventListener('resize', resize)
 loadAndDraw()
-createGui()
+//createGui()
