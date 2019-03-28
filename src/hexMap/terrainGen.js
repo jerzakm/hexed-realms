@@ -1,3 +1,5 @@
+import {hexNeighbours} from './hexMath'
+
 export const TERRAIN = {
     desert: 'desert',
     dirt: 'dirt',
@@ -12,9 +14,33 @@ export const TERRAIN = {
     water: 'water'
 }
 
-export const mapGen = (hexArray) => {
+const WORLD = {
+    poleTemperature: 0
+}
+
+export const mapGen = (hexArray, width, height) => {
     for(let hex of hexArray) {
-        let rnd = Math.floor(Math.random() * Object.entries(TERRAIN).length)
-        hex.options.terrain = Object.entries(TERRAIN)[rnd][0]
+        let t1 = Math.floor(Math.random() * Object.entries(TERRAIN).length)
+        hex.options.terrain = Object.entries(TERRAIN)[t1][0]
+        let t = Math.random()
+        //make landfall
+        if (t>0.995) {
+            hex.options.terrain = TERRAIN.grass
+            //fillNeighbours(hex, hexArray, TERRAIN.swamp)
+        }
+    }
+}
+
+function fillNeighbours(hex, hexArray, terrain){
+        const nc = hexNeighbours(hex.options.cx,hex.options.cy)
+        let nArray = []
+        for(let n of nc.array){
+        let nb = hexArray.find(function(element) {
+            return element.options.cx==n[0] && element.options.cy==n[1]
+        })
+        if(typeof(nb)!='undefined'){
+            nArray.push(nb)
+            nb.options.terrain = terrain
+        }
     }
 }
