@@ -31,15 +31,21 @@ export const calcHexLocation = (i,j,r,h,flat) => {
 }
 
 export const oddqNeighbours = (col,row) => {
+    const N = [col,row-1]
+    const NW = [row-1,col]
+    const NE = [row+1,col]
+    const S = [row,col+1]
+    const SW = [row+1,col-1]
+    const SE =  [row+1,col+1]
     return {
         core: [row,col],
-        array: [[row,col-1],[row-1,col],[row+1,col],[row-1,col+1],[row+1,col+1],[row,col+1]],
-        N: [row,col-1],
-        NW: [row-1,col],
-        NE: [row+1,col],
-        S: [row,col+1],
-        SW: [row-1,col+1],
-        SE: [row+1,col+1]
+        array: [N,NW,NE,S,SW,SE],
+        N:N,
+        NW:NW,
+        NE:NE,
+        S:S,
+        SW:SW,
+        SE:SE
     }
 }
 
@@ -49,7 +55,7 @@ export const cubeNeighbours = (cube) => {
     let NE = {x: cube.x+1, y: cube.y, z: cube.z-1}
     let S = {x: cube.x, y: cube.y-1, z: cube.z+1}
     let SW = {x: cube.x-1, y: cube.y, z: cube.z+1}
-    let SE = {x: cube.x, y: cube.y-1, z: cube.z+1}
+    let SE = {x: cube.x+1, y: cube.y-1, z: cube.z}
     return {
         N: N,
         NW: NW,
@@ -61,8 +67,8 @@ export const cubeNeighbours = (cube) => {
     }
 }
 
-export const oddqToCube = (row,col) => {
-    const x = row
+export const oddqToCube = (col,row) => {
+    const x = col
     const z = row - (col - (col&1)) / 2
     return {
         x: x,
