@@ -1,4 +1,4 @@
-import {hexNeighbours} from './hexMath'
+import {oddqNeighbours} from './hexMath'
 
 export const TERRAIN = {
     desert: 'desert',
@@ -20,27 +20,21 @@ const WORLD = {
 
 export const mapGen = (hexArray, width, height) => {
     for(let hex of hexArray) {
-        let t1 = Math.floor(Math.random() * Object.entries(TERRAIN).length)
-        hex.options.terrain = Object.entries(TERRAIN)[t1][0]
+        //let t1 = Math.floor(Math.random() * Object.entries(TERRAIN).length)
+        //hex.options.terrain = Object.entries(TERRAIN)[t1][0]
         let t = Math.random()
         //make landfall
         if (t>0.995) {
             hex.options.terrain = TERRAIN.grass
-            //fillNeighbours(hex, hexArray, TERRAIN.swamp)
         }
     }
 }
 
 function fillNeighbours(hex, hexArray, terrain){
-        const nc = hexNeighbours(hex.options.cx,hex.options.cy)
-        let nArray = []
-        for(let n of nc.array){
+    const nc = oddqNeighbours(hex.options.cx,hex.options.cy)
+    for(let n of nc.array){
         let nb = hexArray.find(function(element) {
-            return element.options.cx==n[0] && element.options.cy==n[1]
-        })
-        if(typeof(nb)!='undefined'){
-            nArray.push(nb)
-            nb.options.terrain = terrain
-        }
+        return element.options.cx==n[0] && element.options.cy==n[1]
+    })
     }
 }

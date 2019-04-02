@@ -1,6 +1,6 @@
 const PIXI = require('pixi.js')
 const loader = PIXI.Loader.shared;
-import { calcHexPoints, calcHexLocation } from './hexMath'
+import { calcHexPoints, calcHexLocation, oddqToCube } from './hexMath'
 import { Hex } from './hex'
 import { randomColor } from '../util/random'
 import { mapGen } from './terrainGen'
@@ -47,7 +47,7 @@ export class HexMap extends PIXI.Container {
         return mapSize
     }
     generateWorld(){
-        mapGen(this.hexArray)
+        mapGen(this.hexArray, this.wCount, this.hCount)
         return this
     }
 
@@ -55,9 +55,9 @@ export class HexMap extends PIXI.Container {
         for (let i = 0; i < this.wCount; i++) {
             for (let j = 0; j < this.hCount; j++) {
                 let hex = new Hex({
-                    cx:i,
-                    cy:j,
-                    loc: calcHexLocation(i,j,this.r,this.h,this.flat)
+                    oddq: {col:i,row:j},
+                    loc: calcHexLocation(i,j,this.r,this.h,this.flat),
+                    cube: oddqToCube(i,j)
                 })
                 this.hexArray.push(hex)
             }
@@ -99,5 +99,15 @@ export class HexMap extends PIXI.Container {
             this.y = this.r
         }
         return this
+    }
+    getHexOddq(col,row){
+        return this.hexArray.find(function(element){
+            return element.options.oddq.row==row && element.options.oddq.col==col
+        })
+    }
+    getHexCube(cube){
+        return this.children.find(function(element){
+            return element.options.cube.x==cube.x && element.options.cube.z==cube.z && element.options.cube.y==cube.y
+        })
     }
 }

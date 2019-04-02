@@ -21,7 +21,7 @@ export const calcHexLocation = (i,j,r,h,flat) => {
     }
     if (flat){
         loc.y = j*h;
-        if(i&1!=0){
+        if(i%2!=0){
             loc.y = j*h+0.5*h;
         }
     } else {
@@ -30,7 +30,7 @@ export const calcHexLocation = (i,j,r,h,flat) => {
     return loc;
 }
 
-export const hexNeighbours = (row,col) => {
+export const oddqNeighbours = (col,row) => {
     return {
         core: [row,col],
         array: [[row,col-1],[row-1,col],[row+1,col],[row-1,col+1],[row+1,col+1],[row,col+1]],
@@ -40,6 +40,24 @@ export const hexNeighbours = (row,col) => {
         S: [row,col+1],
         SW: [row-1,col+1],
         SE: [row+1,col+1]
+    }
+}
+
+export const cubeNeighbours = (cube) => {
+    let N = {x: cube.x, y: cube.y+1, z: cube.z-1}
+    let NW = {x: cube.x-1, y: cube.y+1, z: cube.z}
+    let NE = {x: cube.x+1, y: cube.y, z: cube.z-1}
+    let S = {x: cube.x, y: cube.y-1, z: cube.z+1}
+    let SW = {x: cube.x-1, y: cube.y, z: cube.z+1}
+    let SE = {x: cube.x, y: cube.y-1, z: cube.z+1}
+    return {
+        N: N,
+        NW: NW,
+        NE: NE,
+        S: S,
+        SE: SE,
+        SW: SE,
+        array: [N,NW,NE,S,SW,SE]
     }
 }
 

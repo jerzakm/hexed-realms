@@ -10,14 +10,22 @@ const dat = require('dat.gui')
 let app, viewport
 
 let options = {
-    worldWidth: 4000,
-    worldHeight: 2200,
-    hexSize: 40,
+    worldWidth: 3000,
+    worldHeight: 1800,
+    hexSize: 100,
     flat: true,
     render: drawWorld
 }
 
-app = new PIXI.Application({ transparent: true, width: window.innerWidth, height: window.innerHeight, resolution: window.devicePixelRatio })
+app = new PIXI.Application({
+    transparent: true,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    resolution: window.devicePixelRatio,
+    antialias: false,
+    powerPreference: 'high-performance'
+})
+
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
 app.view.setAttribute(oncontextmenu,"return false")
 document.body.appendChild(app.view)
