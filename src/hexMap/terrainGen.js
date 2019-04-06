@@ -22,11 +22,11 @@ export const mapGen = (hexArray, width, height) => {
     for(let hex of hexArray) {
         //let t1 = Math.floor(Math.random() * Object.entries(TERRAIN).length)
         //hex.options.terrain = Object.entries(TERRAIN)[t1][0]
-        let t = Math.random()
+        //let t = Math.random()
         //make landfall
-        if (t>0.995) {
-            hex.options.terrain = TERRAIN.grass
-        }
+        //if (t>0.995) {
+        //    hex.options.terrain = TERRAIN.grass
+        //}
     }
 }
 

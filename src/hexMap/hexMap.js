@@ -100,7 +100,7 @@ export class HexMap extends PIXI.Container {
         }
         return this
     }
-    getHexOddq(col,row){
+    getHexOddq(row,col){
         return this.hexArray.find(function(element){
             return element.options.oddq.row==row && element.options.oddq.col==col
         })

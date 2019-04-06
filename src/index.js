@@ -1,5 +1,6 @@
-import { HexMap } from "./hexMap/hexMap";
+import { HexMap } from "./hexMap/hexMap"
 import {TERRAIN} from './hexMap/terrainGen'
+import {initGui, GUI_BTN} from './gui/gui'
 
 
 const PIXI = require('pixi.js')
@@ -10,9 +11,9 @@ const dat = require('dat.gui')
 let app, viewport
 
 let options = {
-    worldWidth: 3000,
-    worldHeight: 1800,
-    hexSize: 100,
+    worldWidth: 2000,
+    worldHeight: 1200,
+    hexSize: 20,
     flat: true,
     render: drawWorld
 }
@@ -40,7 +41,7 @@ function makeWorldViewport()
         passiveWheel: false
     }))
     viewport
-        .drag({ clampWheel: true })
+        .drag({ clampWheel: true, mouseButtons:'right'})
         .wheel({ smooth: 2 })
         .pinch()
         //.decelerate()
@@ -84,14 +85,14 @@ function drawWorld()
         //.drawPolyMap()
         .drawSpriteMap()
     viewport.addChild(hexMap)
-
+    initGui(app)
 }
 
 function loadAndDraw() {
-    for(let type of Object.entries(TERRAIN)) {
-        loader.add(`${type[0]}`,`assets/${type[0]}.png`)
+    for(let terrain of Object.entries(TERRAIN)) {
+        loader.add(`${terrain[0]}`,`assets/${terrain[1]}.png`)
     }
-    loader.load(drawWorld)
+    loader.load(onLoad)
 }
 
 
@@ -100,3 +101,8 @@ resize()
 window.addEventListener('resize', resize)
 loadAndDraw()
 //createGui()
+
+function onLoad() {
+    drawWorld()
+    initGui()
+}
