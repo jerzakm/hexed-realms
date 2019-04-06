@@ -1,6 +1,7 @@
 import { HexMap } from "./hexMap/hexMap"
 import {TERRAIN} from './hexMap/terrainGen'
 import {initGui, GUI_BTN} from './gui/gui'
+import style from "./_scss/main.scss"
 
 
 const PIXI = require('pixi.js')
