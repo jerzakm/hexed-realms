@@ -86,7 +86,6 @@ function drawWorld()
         //.drawPolyMap()
         .drawSpriteMap()
     viewport.addChild(hexMap)
-    initGui(app)
 }
 
 function loadAndDraw() {
@@ -101,7 +100,6 @@ makeWorldViewport()
 resize()
 window.addEventListener('resize', resize)
 loadAndDraw()
-//createGui()
 
 function onLoad() {
     drawWorld()

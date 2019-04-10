@@ -1,4 +1,5 @@
 const PIXI = require('pixi.js')
+import {guiState} from '../gui/gui'
 const loader = PIXI.Loader.shared;
 import {TERRAIN} from './terrainGen'
 import {oddqNeighbours, oddqToCube, cubeNeighbours}  from './hexMath'
@@ -66,15 +67,13 @@ export class Hex extends PIXI.Container{
         hexSprite.on('pointerup', () => { drawMode = false })
 
         hexSprite.on('pointerover', () => {
-            if(drawMode){
+            if(drawMode&&guiState.mode=='paint-brush'){
                 let hexArray = this.parent.children
                 const a = this.options.cube
                 for(let hex of hexArray) {
                     const b = hex.options.cube
                     const distance = (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z)) / 2
                     if(distance <= 1){
-                        //let t1 = Math.floor(Math.random() * Object.entries(TERRAIN).length)
-                        //hex.children[0].texture=loader.resources[Object.entries(TERRAIN)[t1][0]].texture
                         hex.children[0].texture=loader.resources['grass_trees'].texture
                     }
                 }
