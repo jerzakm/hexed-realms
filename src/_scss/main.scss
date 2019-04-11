@@ -1,7 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
 $background-color: #616161;
 $toolbox-background: #FFFFFF;
 $font-color: #1b1b1b;
 $primary-color: rgb(90, 37, 158);
+
+%flex-center {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+}
 
 .main {
   background: $background-color;
@@ -13,52 +22,7 @@ body {
     margin:0;
     background: gray;
     color: $font-color;
+    font-family: 'Montserrat', sans-serif;
 }
 
-.toolbox {
-    position: fixed;
-    display: flex;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    justify-items: center;
-    flex-direction: column;
-    top: 40px;
-    left: 20px;
-    z-index: 1;
-    background: $toolbox-background;
-    padding: 15px 15px 15px 15px;
-    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-    border-radius: 7px;
-}
-.toolbox-item {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    justify-items: center;
-    height: 35px;
-    width: 35px;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 2.2rem;
-    border-radius: 5px;
-    border: none;
-    text-decoration: none;
-    cursor: pointer;
-    background: unset;
-    transition: cubic-bezier(0.39, 0.575, 0.565, 1) 300ms;
-    margin-bottom:15px;
-}
-.toolbox-item:hover{
-    color: $primary-color;
-    transform: scale(1.005);
-}
-
-.toolbox-item-selected {
-    color: $primary-color;
-}
-
-.toolbox-item:focus {
-    outline: 0px;
-}
+@import 'toolbox';

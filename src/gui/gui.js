@@ -1,4 +1,6 @@
-export let guiState = {}
+export let guiState = {
+    brushSize: 1
+}
 let tools = []
 
 export function initGui() {
@@ -57,4 +59,51 @@ function swapMode(mode) {
         }
     }
     guiState.mode = mode
+    drawSelectedToolSettings(mode)
+}
+
+function drawSelectedToolSettings(mode){
+    let settingsContainer = document.getElementById('tool-settings-box')
+    while(settingsContainer.firstChild) {
+        settingsContainer.removeChild(settingsContainer.firstChild);
+    }
+    switch(mode){
+        case 'paint-brush':
+            setPaintBrushTools(settingsContainer)
+            break
+        case 'move':
+            console.log('move')
+            break
+    }
+}
+
+function setPaintBrushTools(parent){
+    const brushSliderValue = () => {
+        //brush size slider values are non linear
+        return Math.round(Math.pow(1.0868, input.value))
+    }
+    let container = document.createElement('div')
+    container.className='tool-setting-group'
+    let label = document.createElement('label')
+    label.className= 'tool-setting-group-label'
+    label.textContent='Brush size'
+    let input = document.createElement('input')
+    input.className='range-slider'
+    input.type='range'
+    input.id='paint-tool-brush-size'
+    input.min=1
+    input.max=50
+    input.value=3
+    input.addEventListener('input', function(){
+        label2.textContent = brushSliderValue()
+        guiState.brushSize = brushSliderValue()
+    })
+    let label2 = document.createElement('label')
+    //label2.textContent='0'
+    label2.className = 'tool-setting-group-label'
+    label2.textContent = brushSliderValue()
+    container.appendChild(label)
+    container.appendChild(input)
+    container.appendChild(label2)
+    parent.append(container)
 }
