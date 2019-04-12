@@ -61,15 +61,6 @@ function border()
     line.lineStyle(10, 0x000000).drawRect(0, 0, options.worldWidth, options.worldHeight)
 }
 
-function createGui() {
-    let gui = new dat.GUI();
-    gui.add(options, 'worldWidth', 0, 10000);
-    gui.add(options, 'worldHeight', 0, 10000);
-    gui.add(options, 'hexSize', 10, 200);
-    gui.add(options, 'flat', [true,false]);
-    gui.add(options, 'render');
-}
-
 function drawWorld()
 {
     viewport.removeChildren()
@@ -104,4 +95,20 @@ loadAndDraw()
 function onLoad() {
     drawWorld()
     initGui()
+}
+
+resourceUriLoader()
+
+async function resourceUriLoader() {
+    console.log('uri loader..')
+    const response = await fetch('/assets/tiles.json');
+    const json = await response.json();
+    console.log(json);
+
+    let base = new PIXI.BaseTexture("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAABgklEQVR42u3dsQ3CMBAFULagoKFhEgp6BqBiMCZhE2aBDoFElITYiS/3vuQOAfKT7HPiOJuNiIiIiIiIiIhIoewu+2fkBgAAgNCdfr4fQreQGAAAACgBcLydelvX5wEAAJAKYE3jfkgMAAAA9AFcH9t3q9FBXd9f6ncBAADQFMDYTv8sE2tjpJgPAADIBxCx3Byycp6yip4VAwAAAGtf8QIAAKApAJ2+MAYAAPkAWuj01KtlAAAAZBr3a2ADAABgFEBXp0cfi1u4VzEIAwAAAP+O+2P/dKlr8VHmDwAAAPwEKNXpa9rxMOsKGQAAAFmv9S819wAAAKB4RZThnsGU0rn6OgAAAABrvIgW5mIcAADxAYZg1N7qbZMWAAAA7ActUuYCAACgqZ3SpcrEpQ5vCv98AAAAnhdTbgIAAAAAAAAA8p0dVLtknPN+QJgTswAAyHGI61JzQ3NPuQAAACATgMO7AQAAMBGj5f2dKd4hAwBAbgDjPgAAAGbA8DpbAAAAfOcFP/hUm0aeqwsAAAAASUVORK5CYII=")
+    let bt = new PIXI.Texture(base)
+
+    let sprite = new PIXI.Sprite(bt)
+    //sprite.texture = loader.resources['desert'].texture
+    viewport.addChild(sprite)
 }
