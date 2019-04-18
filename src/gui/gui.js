@@ -1,9 +1,12 @@
+import {drawHotbar} from './hotbar'
+
 export let guiState = {
     brushSize: 1
 }
 let tools = []
 
 export function initGui() {
+    drawHotbar()
     setupToolbox()
     drawToolbox()
     //default mode

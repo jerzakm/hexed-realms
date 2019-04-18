@@ -3,7 +3,6 @@ const loader = PIXI.Loader.shared;
 import { calcHexPoints, calcHexLocation, oddqToCube } from './hexMath'
 import { Hex } from './hex'
 import { randomColor } from '../util/random'
-import { mapGen } from './terrainGen'
 
 
 export class HexMap extends PIXI.Container {
@@ -47,7 +46,8 @@ export class HexMap extends PIXI.Container {
         return mapSize
     }
     generateWorld(){
-        mapGen(this.hexArray, this.wCount, this.hCount)
+        //TODO TERRAIN FIX
+        //mapGen(this.hexArray, this.wCount, this.hCount)
         return this
     }
 
@@ -77,7 +77,7 @@ export class HexMap extends PIXI.Container {
         return this
     }
     drawSpriteMap(){
-        let sprite = new PIXI.Sprite(loader.resources['desert'].texture)
+        let sprite = new PIXI.Sprite(loader.resources['Water_0'].texture)
         const scale = ((2*this.r)/sprite.width)
         for(let hex of this.hexArray) {
             hex.drawSprite({

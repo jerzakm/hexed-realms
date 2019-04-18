@@ -1,7 +1,6 @@
 const PIXI = require('pixi.js')
 import {guiState} from '../gui/gui'
 const loader = PIXI.Loader.shared;
-import {TERRAIN} from './terrainGen'
 import {oddqNeighbours, oddqToCube, cubeNeighbours}  from './hexMath'
 
 export class HexGraphics extends PIXI.Graphics {
@@ -29,7 +28,8 @@ export class Hex extends PIXI.Container{
 
     defaults(){
         return {
-            terrain: TERRAIN.water,
+            //TODO FIX
+            //terrain: TERRAIN.water,
             r: 10
         }
     }
@@ -56,7 +56,8 @@ export class Hex extends PIXI.Container{
     }
     drawSprite(options){
         let hexSprite = new HexSprite
-        hexSprite.texture = loader.resources[this.options.terrain].texture
+        //TODO FIX
+        hexSprite.texture = loader.resources['Water_0'].texture
         hexSprite.anchor.set(0.5)
         hexSprite.setTransform(0,0,options.scale,options.scale)
         hexSprite.x = options.xTransform
@@ -74,7 +75,7 @@ export class Hex extends PIXI.Container{
                     const b = hex.options.cube
                     const distance = (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z)) / 2
                     if(distance <= guiState.brushSize-1){
-                        hex.children[0].texture=loader.resources['dirt'].texture
+                        hex.children[0].texture=loader.resources['Canyon_0'].texture
                     }
                 }
             }

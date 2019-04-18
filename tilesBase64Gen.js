@@ -1,21 +1,31 @@
-const path = require('path');
-const fs = require('fs');
-const uuidv1 = require('uuid/v1');
-const Datauri = require('datauri');
+// Finds and parses tiles to base 64 ready to use in img src or pixi
+// -not used currently-
 
-const directoryPath = path.join(__dirname, 'HexTileset');
+const path = require('path')
+const fs = require('fs')
+const Datauri = require('datauri')
+const pako = require('pako')
 
-let main = {
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
+
+let coreParent = {
     children: [],
     type: 'folder',
     name: 'main',
-    directoryPath: directoryPath,
+    directoryPath: path.join(__dirname, 'tileset'),
     lastUpdated: Date.now()
 }
 
-function process(parent) {
-    const uuid = uuidv1()
+tilesToBase64()
 
+function tilesToBase64(){
+    process64(coreParent)
+    saveBase64()
+}
+
+function process64(parent) {
     fs.readdir(parent.directoryPath, function (err, files) {
         if (err) {
             return console.log('Unable to scan directory: ' + err);
@@ -25,7 +35,7 @@ function process(parent) {
                 children: [],
                 name: file
             }
-            main.lastUpdated=Date.now()
+            coreParent.lastUpdated=Date.now()
             nFile.directoryPath=path.join(parent.directoryPath, file)
             let stats = fs.statSync(nFile.directoryPath)
             if(stats.isFile()&&path.extname(nFile.directoryPath)){
@@ -35,29 +45,23 @@ function process(parent) {
             } else if(stats.isDirectory()){
                 nFile.type='folder'
                 parent.children.push(nFile)
-                process(nFile)
+                process64(nFile)
             }
         });
     });
 }
 
-const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-  }
-
-async function save() {
+async function saveBase64() {
     await sleep(5)
-    if(Date.now()-main.lastUpdated>100){
+    if(Date.now()-coreParent.lastUpdated>100){
+        let gzipped = pako.deflate(JSON.stringify(coreParent))
         console.log('saving file..')
-        fs.writeFile("dist/assets/tiles.json", JSON.stringify(main), function(err) {
+        fs.writeFile("dist/assets/tiles.json", gzipped, function(err) {
             if(err) {
                 return console.log(err);
             }
         });
     } else {
-        save()
+        saveBase64()
     }
 }
-
-process(main)
-save()
