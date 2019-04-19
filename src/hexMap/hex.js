@@ -64,10 +64,15 @@ export class Hex extends PIXI.Container{
         hexSprite.y = options.yTransform
         hexSprite.buttonMode = true
         hexSprite.interactive = true
-        hexSprite.on('pointerdown', () => { drawMode = true })
+        hexSprite.on('pointerdown', () => {
+            drawMode = true
+            paint()})
         hexSprite.on('pointerup', () => { drawMode = false })
 
         hexSprite.on('pointerover', () => {
+            paint()
+        })
+        const paint = () => {
             if(drawMode&&guiState.mode=='paint-brush'){
                 let hexArray = this.parent.children
                 const a = this.options.cube
@@ -79,7 +84,7 @@ export class Hex extends PIXI.Container{
                     }
                 }
             }
-        })
+        }
         this.addChild(hexSprite)
         //TODO as a method/option -> coord debug
         return this
