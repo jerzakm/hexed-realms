@@ -55,17 +55,22 @@ const makeGroups = (hotbarContainer) => {
         let hotbarButton = document.createElement('hotbarButton')
         hotbarButton.className='hotbar-element'
 
-        let hotbarNumber = document.createElement('label')
-        hotbarNumber.className='hotbar-key'
-        hotbarNumber.textContent=`${group.name.split(' ')[0]}`
+        let hotbarNumberLabel = document.createElement('label')
+        hotbarNumberLabel.className='hotbar-key'
+        const hotbarNumber = group.name.split(' ')[0]
+        hotbarNumberLabel.textContent=`${hotbarNumber}`
 
         let hotbarIcon = document.createElement('img')
         hotbarIcon.className = 'hotbar-icon'
         hotbarIcon.src= `${group.children[0].path}`
 
-        hotbarButton.appendChild(hotbarNumber)
+        hotbarButton.appendChild(hotbarNumberLabel)
         hotbarButton.appendChild(hotbarIcon)
         hotbarContainer.appendChild(hotbarButton)
+
+        hotbarButton.addEventListener("click", ()=> {
+            hotbarSetActive(hotbarNumber)
+        });
     }
 }
 
