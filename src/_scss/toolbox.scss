@@ -84,6 +84,18 @@
   margin-right: 5px;
 }
 
+.hotbar-element-selected {
+  animation: bg 2.5s infinite alternate;
+  border-width: 1px;
+  border-color: $font-color;
+  border-style: double;
+}
+
+@keyframes bg {
+  0%   { background: $secondary-background; }
+  100% { background: $primary-color; }
+}
+
 .hotbar-key {
   font-size: 1.1rem;
   position: relative;

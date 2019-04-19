@@ -75,7 +75,7 @@ export class Hex extends PIXI.Container{
                     const b = hex.options.cube
                     const distance = (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z)) / 2
                     if(distance <= guiState.brushSize-1){
-                        hex.children[0].texture=loader.resources['Canyon_0'].texture
+                        hex.children[0].texture=loader.resources[guiState.currentHexTexture].texture
                     }
                 }
             }

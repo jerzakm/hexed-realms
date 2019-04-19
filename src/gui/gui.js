@@ -1,4 +1,8 @@
-import {drawHotbar} from './hotbar'
+import {setPaintBrushTools} from './modes/paintbrush'
+const Combokeys = require('combokeys')
+
+
+export let combokeys = new Combokeys(document.documentElement)
 
 export let guiState = {
     brushSize: 1
@@ -6,10 +10,8 @@ export let guiState = {
 let tools = []
 
 export function initGui() {
-    drawHotbar()
     setupToolbox()
     drawToolbox()
-    //default mode
     swapMode('paint-brush')
 }
 
@@ -33,6 +35,8 @@ function drawToolbox() {
     }
     document.body.appendChild(toolboxContainer)
 }
+
+
 
 //setup toolbox - icons, names
 function setupToolbox() {
@@ -61,6 +65,8 @@ function swapMode(mode) {
             button.classList.add('toolbox-item-selected')
         }
     }
+    combokeys.detach()
+    combokeys = new Combokeys(document.documentElement)
     guiState.mode = mode
     drawSelectedToolSettings(mode)
 }
@@ -78,35 +84,4 @@ function drawSelectedToolSettings(mode){
             console.log('move')
             break
     }
-}
-
-function setPaintBrushTools(parent){
-    const brushSliderValue = () => {
-        //brush size slider values are non linear
-        return Math.round(Math.pow(1.0868, input.value))
-    }
-    let container = document.createElement('div')
-    container.className='tool-setting-group'
-    let label = document.createElement('label')
-    label.className= 'tool-setting-group-label'
-    label.textContent='Brush size'
-    let input = document.createElement('input')
-    input.className='range-slider'
-    input.type='range'
-    input.id='paint-tool-brush-size'
-    input.min=1
-    input.max=50
-    input.value=3
-    input.addEventListener('input', function(){
-        label2.textContent = brushSliderValue()
-        guiState.brushSize = brushSliderValue()
-    })
-    let label2 = document.createElement('label')
-    //label2.textContent='0'
-    label2.className = 'tool-setting-group-label'
-    label2.textContent = brushSliderValue()
-    container.appendChild(label)
-    container.appendChild(input)
-    container.appendChild(label2)
-    parent.append(container)
 }

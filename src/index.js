@@ -46,6 +46,7 @@ function makeWorldViewport()
         .pinch()
         //.decelerate()
     viewport.userPlugin('test', new UserPlugin(viewport))
+    console.log('viewport set')
 }
 
 function resize()
