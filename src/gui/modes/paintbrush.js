@@ -11,11 +11,18 @@ export function setPaintBrushTools(parent){
 }
 
 const drawHotbar = () => {
+    let center = document.createElement('container')
+    center.className = 'flex-center-container'
+    center.id = 'terrain-hotbar-container'
+
     let hotbarContainer = document.createElement('hotbar')
     hotbarContainer.className = 'tool-settings-box'
     hotbarContainer.id = 'terrain-hotbar'
+
     makeGroups(hotbarContainer)
-    document.body.appendChild(hotbarContainer)
+
+    center.appendChild(hotbarContainer)
+    document.body.appendChild(center)
 }
 
 const drawBrushSizeSlider = () => {
@@ -51,19 +58,22 @@ const drawBrushSizeSlider = () => {
 
 
 const makeGroups = (hotbarContainer) => {
-    console.log(tileSetRef)
     let key = 1
     for(let group of tileSetRef.children){
         let groupIcon
+        let terrainRef
         if(group.children[0].type=='tile'){
             groupIcon = tileTextureData[`${group.children[0].name}`]
+            terrainRef = `${group.children[0].name}`
         } else {
             groupIcon = tileTextureData[`${group.children[0].children[0].name}`]
+            terrainRef = `${group.children[0].children[0].name}`
         }
 
         let hotbarButton = document.createElement('hotbarButton')
         hotbarButton.className='hotbar-element'
         hotbarButton.setAttribute(`data-texture-group`,`${key-1}`)
+        hotbarButton.setAttribute(`attx`,`${terrainRef}`)
 
         let hotbarNumberLabel = document.createElement('label')
         hotbarNumberLabel.className='hotbar-key'
@@ -102,21 +112,13 @@ const hotbarSetActive = (hotkey) => {
         for(let child of hotbarElement.children){
             if(child.className=='hotbar-key'){
                 if(parseInt(child.innerText, 10)==parseInt(hotkey, 10)){
-
-
                     //texture select
-                    drawTextureSelect(hotbarElement.getAttribute('data-texture-group'))
-
-
+                    //drawTextureSelect(hotbarElement.getAttribute('data-texture-group'))
+                    const g = hotbarElement.getAttribute('attx')
+                    guiState.currentHexTexture = g
+                    console.log(g)
                     hotbarElement.classList.add('hotbar-element-selected')
-                    //TODO make not dependent on array, load ref from Tileref or loader
-                    let imgRef = hotbarElement.children[1].src.split('/')
-                    imgRef = imgRef[imgRef.length-1]
-                    for(let resource of Object.keys(loader.resources)){
-                        if(loader.resources[`${resource}`].url.includes(imgRef)){
-                            guiState.currentHexTexture=resource
-                        }
-                    }
+
                 } else {
                     hotbarElement.classList.remove('hotbar-element-selected')
                 }
@@ -126,22 +128,26 @@ const hotbarSetActive = (hotkey) => {
 }
 
 function drawTextureSelect(group){
-    let previous = document.getElementById('texture-group-expanded-select')
+    let previous = document.getElementById('texture-group-expanded-select-container')
     if(previous!=null){
         previous.remove()
     }
     const refGroup = tileSetRef.children[`${group}`]
 
+    let center = document.createElement('container')
+    center.className = 'flex-center-container'
+    center.id = 'texture-group-expanded-select-container'
+
     let textureSelectContainer = document.createElement('div')
     textureSelectContainer.id=`texture-group-expanded-select`
     if(refGroup.children[0].type=='group'){
+        let subGroup = document.createElement('div')
+        subGroup.className=`tool-settings-box`
         for(let subChild of refGroup.children){
-            let subGroup = document.createElement('div')
-            subGroup.className=`tool-settings-box`
 
             let h2 = document.createElement('h2')
-            h2.innerText=`${refGroup.name} ${subChild.name}`
-            subGroup.appendChild(h2)
+            h2.innerText=`${subChild.name}`
+            //subGroup.appendChild(h2)
 
             for(let tile of subChild.children){
                 let imgElement = document.createElement('div')
@@ -154,15 +160,15 @@ function drawTextureSelect(group){
 
                 subGroup.appendChild(imgElement)
             }
-            textureSelectContainer.appendChild(subGroup)
         }
+        textureSelectContainer.appendChild(subGroup)
     } else {
         let subGroup = document.createElement('div')
         subGroup.className=`tool-settings-box`
 
         let h2 = document.createElement('h2')
         h2.innerText=`${refGroup.name}`
-        subGroup.appendChild(h2)
+        //subGroup.appendChild(h2)
         for(let tile of refGroup.children){
             let imgElement = document.createElement('div')
             imgElement.className = "texture-select-element"
@@ -178,6 +184,6 @@ function drawTextureSelect(group){
     }
 
 
-
-    document.body.appendChild(textureSelectContainer)
+    center.appendChild(textureSelectContainer)
+    document.body.appendChild(center)
 }

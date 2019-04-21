@@ -57,7 +57,8 @@ export class Hex extends PIXI.Container{
     drawSprite(options){
         let hexSprite = new HexSprite
         //TODO FIX
-        hexSprite.texture = loader.resources['Water_0'].texture
+        let texture = PIXI.Texture.from(loader.resources['f14f3bea51d634686d68b06555014d37'])
+        hexSprite.texture = texture
         hexSprite.anchor.set(0.5)
         hexSprite.setTransform(0,0,options.scale,options.scale)
         hexSprite.x = options.xTransform
@@ -80,7 +81,7 @@ export class Hex extends PIXI.Container{
                     const b = hex.options.cube
                     const distance = (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z)) / 2
                     if(distance <= guiState.brushSize-1){
-                        hex.children[0].texture=loader.resources[guiState.currentHexTexture].texture
+                        hex.children[0].texture=PIXI.Texture.from(loader.resources[`${guiState.currentHexTexture}`])
                     }
                 }
             }

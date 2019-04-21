@@ -1,5 +1,5 @@
 .tool-settings-box {
-    position: fixed;
+    //position: fixed;
     @extend %flex-center;
     flex-direction: row;
     z-index: 1;
@@ -14,9 +14,9 @@
   left: 120px;
   height: 40px;
 }
-#terrain-hotbar {
+#terrain-hotbar-container {
+  position:fixed;
   bottom: 40px;
-  left: 120px;
 }
 
 .toolbox {
@@ -134,6 +134,7 @@
   height: 50px;
   background-color: $secondary-background;
   margin-right: 5px;
+  margin-bottom: 5px;
 }
 
 .texture-select-element-img{
@@ -143,26 +144,27 @@
 }
 
 #texture-group-expanded-select{
-  position:fixed;
   display: flex;
   align-content: flex-start;
   flex-direction: column-reverse;
   justify-content: flex-start;
   flex-wrap: wrap;
-  bottom: 200px;
-  left: 120px;
-  width:1000px;
-  height: 500px;
-  background-color: red;
+  width:1100px;
+  z-index: 3;
   .tool-settings-box{
-    h2{
-      width:100%;
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin: 0 0px 0 0px;
-    }
+    flex-direction: row;
     position: relative;
     margin: 7px 0px 7px 0px;
-    flex-wrap: wrap;
+    flex-wrap: wrap-reverse;
   }
+}
+
+.flex-center-container {
+  width: 100%;
+  @extend %flex-center;
+}
+
+#texture-group-expanded-select-container{
+  position:fixed;
+  bottom: 130px;
 }

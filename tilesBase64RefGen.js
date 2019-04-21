@@ -55,7 +55,10 @@ function process64(parent) {
                 parent.children.push(nFile)
             } else if(stats.isDirectory()){
                 nFile.type='group'
-                nFile.name=file.split(' ')[1]
+                let nameArray = file.split(' ')
+                nameArray.shift()
+                nFile.name=nameArray.join(' ')
+                console.log(nFile.name)
                 parent.children.push(nFile)
                 process64(nFile)
             }
