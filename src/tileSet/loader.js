@@ -1,16 +1,15 @@
 const PIXI = require('pixi.js')
-const loader = PIXI.Loader.shared;
-export let tileSetRef;
+const loader = PIXI.Loader.shared
+export let tileSetRef
+export let tileTextureData
 
-export async function loadTileSetThenDo(fun) {
-    const response = await fetch('/assets/tilesRef.json');
-    tileSetRef = await response.json();
-    for(let group of tileSetRef.children) {
-        for (let i = 0; i < group.children.length; i++) {
-            const element = group.children[i]
-            let tileRef = `${group.name.split(' ')[1]}_${i}`
-            loader.add(tileRef, element.path)
-        }
-    }
-    loader.load(fun)
+export async function loadTileSetThenDo(onComplete) {
+    let ref = await fetch('/assets/tileset/tilesRef64.json')
+    let tile = await fetch('/assets/tileset/tilesData64.json')
+    tileTextureData = await tile.json()
+    tileSetRef = await ref.json()
+    /*for(let tile of Object.keys(tileTextureData)){
+        loader.add(tile, tileTextureData[`${tile}`])
+    }*/
+    loader.load(onComplete)
 }

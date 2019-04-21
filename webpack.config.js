@@ -16,6 +16,11 @@ module.exports = {
         filename: "[name].js",
         path: path.resolve(__dirname, "dist")
     },
+    optimization: {
+      splitChunks: {
+        chunks: 'all'
+      }
+    },
     watch: true,
     watchOptions: {
         aggregateTimeout: 300,

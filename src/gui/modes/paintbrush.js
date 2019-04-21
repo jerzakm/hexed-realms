@@ -1,4 +1,4 @@
-import {tileSetRef} from '../../tileSet/loader'
+import {tileSetRef, tileTextureData} from '../../tileSet/loader'
 import {guiState, combokeys} from '../gui'
 const PIXI = require('pixi.js')
 const loader = PIXI.Loader.shared;
@@ -51,25 +51,34 @@ const drawBrushSizeSlider = () => {
 
 
 const makeGroups = (hotbarContainer) => {
+    console.log(tileSetRef)
+
+    let key = 1
     for(let group of tileSetRef.children){
+        let groupIcon
+        if(group.children[0].type=='tile'){
+            groupIcon = tileTextureData[`${group.children[0].name}`]
+        } else {
+            groupIcon = tileTextureData[`${group.children[0].children[0].name}`]
+        }
+
         let hotbarButton = document.createElement('hotbarButton')
         hotbarButton.className='hotbar-element'
 
         let hotbarNumberLabel = document.createElement('label')
         hotbarNumberLabel.className='hotbar-key'
-        const hotbarNumber = group.name.split(' ')[0]
-        hotbarNumberLabel.textContent=`${hotbarNumber}`
-
+        hotbarNumberLabel.textContent=`0${key}`
+        key++
         let hotbarIcon = document.createElement('img')
         hotbarIcon.className = 'hotbar-icon'
-        hotbarIcon.src= `${group.children[0].path}`
+        hotbarIcon.src= `${groupIcon}`
 
         hotbarButton.appendChild(hotbarNumberLabel)
         hotbarButton.appendChild(hotbarIcon)
         hotbarContainer.appendChild(hotbarButton)
 
         hotbarButton.addEventListener("click", ()=> {
-            hotbarSetActive(hotbarNumber)
+            hotbarSetActive(hotbarNumberLabel.textContent)
         });
     }
 }

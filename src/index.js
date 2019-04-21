@@ -3,17 +3,16 @@ import {initGui, GUI_BTN} from './gui/gui'
 import style from "./_scss/main.scss"
 import {loadTileSetThenDo, tileSetRef} from './tileSet/loader'
 
-
+const pako = require('pako')
 const PIXI = require('pixi.js')
-const loader = PIXI.Loader.shared;
 const Viewport = require('pixi-viewport')
 const UserPlugin = require('pixi-viewport')
 let app, viewport
 
 let options = {
-    worldWidth: 2000,
+    worldWidth: 1800,
     worldHeight: 1200,
-    hexSize: 20,
+    hexSize: 24,
     flat: true,
     render: drawWorld
 }
@@ -81,9 +80,11 @@ function drawWorld()
 makeWorldViewport()
 resize()
 window.addEventListener('resize', resize)
+
 loadTileSetThenDo(onLoad)
+//loadTileSetThenDo(console.log('loaded'))
 
 function onLoad() {
     initGui()
-    drawWorld()
+    //drawWorld()
 }
