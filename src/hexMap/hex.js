@@ -57,7 +57,7 @@ export class Hex extends PIXI.Container{
     drawSprite(options){
         let hexSprite = new HexSprite
         //TODO FIX
-        let texture = PIXI.Texture.from(loader.resources['f14f3bea51d634686d68b06555014d37'])
+        let texture = PIXI.Texture.from(loader.resources['033b89aa2712dfcd36fe854e4835030c'])
         hexSprite.texture = texture
         hexSprite.anchor.set(0.5)
         hexSprite.setTransform(0,0,options.scale,options.scale)

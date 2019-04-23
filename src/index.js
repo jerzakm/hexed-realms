@@ -11,8 +11,8 @@ const UserPlugin = require('pixi-viewport')
 let app, viewport
 
 let options = {
-    worldWidth: 2000,
-    worldHeight: 1300,
+    worldWidth: 1400,
+    worldHeight: 700,
     hexSize: 20,
     flat: true,
     render: drawWorld
@@ -28,7 +28,7 @@ app = new PIXI.Application({
 })
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
-app.view.setAttribute(oncontextmenu,"return false")
+//app.view.setAttribute(oncontextmenu,"return false")
 document.body.appendChild(app.view)
 app.view.style.position = 'fixed'
 app.view.style.width = '100vw'
@@ -45,7 +45,6 @@ function makeWorldViewport()
         .wheel({ smooth: 2 })
         .pinch()
         //.decelerate()
-    viewport.userPlugin('test', new UserPlugin(viewport))
 }
 
 function resize()

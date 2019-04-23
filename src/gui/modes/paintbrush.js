@@ -7,7 +7,8 @@ export function setPaintBrushTools(parent){
     drawBrushSizeSlider()
     drawHotbar()
     setHotkeys()
-    hotbarSetActive('1')
+    hotbarKeyPress('1')
+    guiState.textureSelectOpen = false
 }
 
 const drawHotbar = () => {
@@ -25,6 +26,7 @@ const drawHotbar = () => {
     document.body.appendChild(center)
 }
 
+
 const drawBrushSizeSlider = () => {
     const brushSliderValue = () => {
         //brush size slider values are non linear
@@ -32,6 +34,7 @@ const drawBrushSizeSlider = () => {
     }
     let container = document.createElement('div')
     container.className='tool-setting-group'
+    container.id='paint-brush-tools'
     let label = document.createElement('label')
     label.className= 'tool-setting-group-label'
     label.textContent='Brush size'
@@ -54,8 +57,6 @@ const drawBrushSizeSlider = () => {
     container.appendChild(label2)
     document.getElementById('tool-settings-box').appendChild(container)
 }
-
-
 
 const makeGroups = (hotbarContainer) => {
     let key = 1
@@ -88,35 +89,47 @@ const makeGroups = (hotbarContainer) => {
         hotbarContainer.appendChild(hotbarButton)
 
         hotbarButton.addEventListener("click", ()=> {
-            hotbarSetActive(hotbarNumberLabel.textContent)
+            hotbarKeyPress(hotbarNumberLabel.textContent)
         });
     }
 }
 
 const setHotkeys = () => {
-    combokeys.bind('1', function() { hotbarSetActive('1') });
-    combokeys.bind('2', function() { hotbarSetActive('2') });
-    combokeys.bind('3', function() { hotbarSetActive('3') });
-    combokeys.bind('4', function() { hotbarSetActive('4') });
-    combokeys.bind('5', function() { hotbarSetActive('5') });
-    combokeys.bind('6', function() { hotbarSetActive('6') });
-    combokeys.bind('7', function() { hotbarSetActive('7') });
-    combokeys.bind('8', function() { hotbarSetActive('8') });
-    combokeys.bind('9', function() { hotbarSetActive('9') });
-    combokeys.bind('0', function() { hotbarSetActive('0') });
+    combokeys.bind('1', function() { hotbarKeyPress('1') });
+    combokeys.bind('2', function() { hotbarKeyPress('2') });
+    combokeys.bind('3', function() { hotbarKeyPress('3') });
+    combokeys.bind('4', function() { hotbarKeyPress('4') });
+    combokeys.bind('5', function() { hotbarKeyPress('5') });
+    combokeys.bind('6', function() { hotbarKeyPress('6') });
+    combokeys.bind('7', function() { hotbarKeyPress('7') });
+    combokeys.bind('8', function() { hotbarKeyPress('8') });
+    combokeys.bind('9', function() { hotbarKeyPress('9') });
+    combokeys.bind('0', function() { hotbarKeyPress('10') });
+    combokeys.bind('-', function() { hotbarKeyPress('11') });
+    combokeys.bind('esc', function() { destroyTextureSelect() });
 }
 
-const hotbarSetActive = (hotkey) => {
+let lastKeyPress = {}
+
+const hotbarKeyPress = (hotkey) => {
+    if(Date.now()-lastKeyPress[`${hotkey}`]<1000){
+        if(!guiState.textureSelectOpen) {
+            drawTextureSelect(hotkey)
+            guiState.textureSelectOpen = true
+        }
+    } else if(guiState.textureSelectOpen){
+        drawTextureSelect(hotkey)
+    } else if(Date.now()-lastKeyPress[`${hotkey}`]>1000){
+        destroyTextureSelect()
+    }
+    lastKeyPress[`${hotkey}`] = Date.now()
     let hotbarElements = document.getElementsByClassName('hotbar-element')
     for(let hotbarElement of hotbarElements) {
         for(let child of hotbarElement.children){
             if(child.className=='hotbar-key'){
                 if(parseInt(child.innerText, 10)==parseInt(hotkey, 10)){
-                    //texture select
-                    //drawTextureSelect(hotbarElement.getAttribute('data-texture-group'))
                     const g = hotbarElement.getAttribute('attx')
                     guiState.currentHexTexture = g
-                    console.log(g)
                     hotbarElement.classList.add('hotbar-element-selected')
 
                 } else {
@@ -127,12 +140,21 @@ const hotbarSetActive = (hotkey) => {
     }
 }
 
+function destroyTextureSelect() {
+    let element = document.getElementById('texture-group-expanded-select-container')
+    if(element!=null){
+        element.remove()
+    }
+}
+
 function drawTextureSelect(group){
+    destroyTextureSelect()
+    let selected = parseInt(group, 10) -1
     let previous = document.getElementById('texture-group-expanded-select-container')
     if(previous!=null){
         previous.remove()
     }
-    const refGroup = tileSetRef.children[`${group}`]
+    const refGroup = tileSetRef.children[`${selected}`]
 
     let center = document.createElement('container')
     center.className = 'flex-center-container'
@@ -144,11 +166,6 @@ function drawTextureSelect(group){
         let subGroup = document.createElement('div')
         subGroup.className=`tool-settings-box`
         for(let subChild of refGroup.children){
-
-            let h2 = document.createElement('h2')
-            h2.innerText=`${subChild.name}`
-            //subGroup.appendChild(h2)
-
             for(let tile of subChild.children){
                 let imgElement = document.createElement('div')
                 imgElement.className = "texture-select-element"
@@ -157,6 +174,10 @@ function drawTextureSelect(group){
                 img.className = `texture-select-element-img`
                 img.src = `${tileTextureData[`${tile.name}`]}`
                 imgElement.appendChild(img)
+
+                imgElement.addEventListener("click", ()=> {
+                    selectNewTexture(selected, tile.name)
+                })
 
                 subGroup.appendChild(imgElement)
             }
@@ -177,13 +198,35 @@ function drawTextureSelect(group){
             img.className = `texture-select-element-img`
             img.src = `${tileTextureData[`${tile.name}`]}`
             imgElement.appendChild(img)
-
+            imgElement.addEventListener("click", ()=> {
+                selectNewTexture(selected, tile.name)
+            })
             subGroup.appendChild(imgElement)
         }
         textureSelectContainer.appendChild(subGroup)
     }
 
-
     center.appendChild(textureSelectContainer)
     document.body.appendChild(center)
+}
+
+function selectNewTexture(group, texture){
+    let hotbarElements = document.getElementsByClassName('hotbar-element')
+    for(let hotbarElement of hotbarElements) {
+        for(let child of hotbarElement.children){
+            if(child.className=='hotbar-key'){
+                if(parseInt(child.innerText, 10) == group+1){
+                    hotbarElement.setAttribute('attx', texture)
+                    const selectedTexture = hotbarElement.getAttribute('attx')
+                    console.log(selectedTexture)
+                    guiState.currentHexTexture = selectedTexture
+                    hotbarElement.children[1].src=tileTextureData[`${selectedTexture}`]
+
+                } else {
+                    hotbarElement.classList.remove('hotbar-element-selected')
+                }
+            }
+        }
+    }
+    destroyTextureSelect()
 }

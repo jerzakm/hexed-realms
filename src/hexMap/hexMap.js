@@ -77,7 +77,7 @@ export class HexMap extends PIXI.Container {
         return this
     }
     drawSpriteMap(){
-        let texture = PIXI.Texture.from(loader.resources['f14f3bea51d634686d68b06555014d37'])
+        let texture = PIXI.Texture.from(loader.resources['033b89aa2712dfcd36fe854e4835030c'])
         let sprite = new PIXI.Sprite(texture)
         const scale = ((2*this.r)/sprite.width)
         for(let hex of this.hexArray) {

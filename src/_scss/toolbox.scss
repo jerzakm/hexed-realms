@@ -167,4 +167,11 @@
 #texture-group-expanded-select-container{
   position:fixed;
   bottom: 130px;
+  z-index:3;
+}
+
+#tool-settings-box-container{
+  position:fixed;
+  bottom: 135px;
+  z-index:1;
 }

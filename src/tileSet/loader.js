@@ -10,10 +10,5 @@ export async function loadTileSetThenDo(onComplete) {
     tileTextureData = await tile.json()
     tileSetRef = await ref.json()
     loader.resources = tileTextureData
-    console.log(loader)
-    /*for(let tile of Object.keys(tileTextureData)){
-        let texture = PIXI.Texture.from(tileTextureData[`${tile}`])
-        loader.resources[`${tile}`]=texture
-    }*/
     loader.load(onComplete)
 }
