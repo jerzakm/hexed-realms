@@ -39,17 +39,27 @@ export class Hex extends PIXI.Container{
         hexPoly.beginFill(options.fill)
         hexPoly.drawPolygon(options.points)
         hexPoly.endFill()
+        hexPoly.alpha = 0
         this.addChild(hexPoly)
         this.hexPoly=hexPoly
-        let text = new PIXI.Text(`${this.options.oddq.col};${this.options.oddq.row}`,{fontFamily : 'Arial', fontSize: 36, fill : 0x000000, align : 'left'})
-        text.setTransform(-18,-10)
-        this.addChild(text)
-        hexPoly.buttonMode = true
+        // let text = new PIXI.Text(`${this.options.oddq.col};${this.options.oddq.row}`,{fontFamily : 'Arial', fontSize: 36, fill : 0x000000, align : 'left'})
+        // text.setTransform(-18,-10)
+        // this.addChild(text)
         hexPoly.interactive = true
-        hexPoly.on('pointerdown', () => {
-            const neighbours = oddqNeighbours(this.options.oddq.col,this.options.oddq.row)
-            for (let n of neighbours.array) {
-                let hex = this.parent.getHexOddq(n[0],n[1]).children[0]
+        hexPoly.on('pointerover', () => {
+            if(guiState.mode=='paint-brush'){
+                let hexArray = this.parent.children
+                console.log(hexArray)
+                const a = this.options.cube
+                for(let hex of hexArray) {
+                    const b = hex.options.cube
+                    const distance = (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z)) / 2
+                    if(distance <= guiState.brushSize-1){
+                        hex.children[0].alpha=0.6
+                    } else {
+                        hex.children[0].alpha=0
+                    }
+                }
             }
         })
         return this
@@ -74,14 +84,20 @@ export class Hex extends PIXI.Container{
             paint()
         })
         const paint = () => {
-            if(drawMode&&guiState.mode=='paint-brush'){
+            if(guiState.mode=='paint-brush'){
                 let hexArray = this.parent.children
                 const a = this.options.cube
                 for(let hex of hexArray) {
                     const b = hex.options.cube
                     const distance = (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z)) / 2
                     if(distance <= guiState.brushSize-1){
-                        hex.children[0].texture=PIXI.Texture.from(loader.resources[`${guiState.currentHexTexture}`])
+                        if(drawMode){
+                            hex.children[0].texture=PIXI.Texture.from(loader.resources[`${guiState.currentHexTexture}`])
+                        }
+                        hex.children[0].tint = 0xDDAAAA
+                    }
+                    else {
+                        hex.children[0].tint =  0xFFFFFF;
                     }
                 }
             }
