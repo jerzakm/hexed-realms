@@ -68,6 +68,7 @@ export class HexMap extends PIXI.Container {
     drawPolyMap(){
         const hexPointsPrecalc = calcHexPoints(this.r,this.h, this.flat)
         const color = randomColor()
+        console.log(color)
         for(let hex of this.hexArray) {
             hex.drawPoly({
                 fill: color,
