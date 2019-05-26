@@ -2,18 +2,20 @@ import { HexMap } from "./hexMap/hexMap"
 import {initGui, GUI_BTN} from './gui/gui'
 import style from "./_scss/main.scss"
 import {loadTileSetThenDo, tileSetRef} from './tileSet/loader'
+import {Layer} from './hexMap/layer'
 
 const pako = require('pako')
 const PIXI = require('pixi.js')
 const loader = PIXI.Loader.shared;
 const Viewport = require('pixi-viewport')
 const UserPlugin = require('pixi-viewport')
-let app, viewport
 
+
+let app, viewport
 let options = {
-    worldWidth: 1400,
-    worldHeight: 700,
-    hexSize: 20,
+    worldWidth: 2800,
+    worldHeight: 1400,
+    hexSize: 25,
     flat: true,
     render: drawWorld
 }
@@ -65,16 +67,35 @@ function drawWorld()
     viewport.moveCorner(0, 0)
     viewport.fitWorld()
     border()
+
+    let layer = new Layer();
+
     let hexMap = new HexMap()
         .setHexSize(options.hexSize)
         .setFlat(options.flat)
         .setWorldSize(options.worldWidth, options.worldHeight)
         .align()
         .setup()
-        .generateWorld()
-        //.drawPolyMap()
         .drawSpriteMap()
+
+    let hexMap2 = new HexMap()
+        .setHexSize(options.hexSize)
+        .setFlat(options.flat)
+        .setWorldSize(options.worldWidth, options.worldHeight)
+        .align()
+        .setup()
+        .drawSpriteMap()
+
     viewport.addChild(hexMap)
+    viewport.addChild(hexMap2)
+    hexMap.layer = '1'
+    hexMap2.layer = '2'
+
+    let testButton = document.getElementById('global-test-btn')
+    testButton.addEventListener('click', function(){
+        viewport.swapChildren (hexMap, hexMap2)
+        //hexMap.alpha = 0.1
+    })
 }
 
 makeWorldViewport()

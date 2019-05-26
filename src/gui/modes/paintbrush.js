@@ -210,6 +210,7 @@ function drawTextureSelect(group){
     document.body.appendChild(center)
 }
 
+
 function selectNewTexture(group, texture){
     let hotbarElements = document.getElementsByClassName('hotbar-element')
     for(let hotbarElement of hotbarElements) {

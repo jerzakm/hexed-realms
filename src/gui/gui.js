@@ -13,6 +13,7 @@ export function initGui() {
     setupToolbox()
     drawToolbox()
     swapMode('paint-brush')
+    drawGlobalTestBtn()
 }
 
 //draws dom toolbox and sets up button listeners- paintbrush, fill etc
@@ -84,4 +85,15 @@ function drawSelectedToolSettings(mode){
             console.log('move')
             break
     }
+}
+
+function drawGlobalTestBtn(){
+    let testButton = document.createElement('button')
+    testButton.className = 'tool-settings-box'
+    testButton.id = 'global-test-btn'
+    testButton.innerText = 'test'
+    testButton.addEventListener('click', function(){
+        console.log('test button...')
+    })
+    document.body.appendChild(testButton)
 }

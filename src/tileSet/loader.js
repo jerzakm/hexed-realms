@@ -10,5 +10,6 @@ export async function loadTileSetThenDo(onComplete) {
     tileTextureData = await tile.json()
     tileSetRef = await ref.json()
     loader.resources = tileTextureData
+    loader.resources.empty = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNWRHWFIAAADzSURBVHhe7cihAQAwEISw33/p6wJoahAxuW35CDMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgw48GMBzMezHgwY9k9PyeaRliie8sAAAAASUVORK5CYII='
     loader.load(onComplete)
 }

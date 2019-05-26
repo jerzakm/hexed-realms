@@ -1,4 +1,5 @@
 const PIXI = require('pixi.js')
+
 import {guiState} from '../gui/gui'
 const loader = PIXI.Loader.shared;
 import {oddqNeighbours, oddqToCube, cubeNeighbours}  from './hexMath'
@@ -67,7 +68,7 @@ export class Hex extends PIXI.Container{
     drawSprite(options){
         let hexSprite = new HexSprite
         //TODO FIX
-        let texture = PIXI.Texture.from(loader.resources['033b89aa2712dfcd36fe854e4835030c'])
+        let texture = PIXI.Texture.from(loader.resources['empty'])
         hexSprite.texture = texture
         hexSprite.anchor.set(0.5)
         hexSprite.setTransform(0,0,options.scale,options.scale)
@@ -97,7 +98,7 @@ export class Hex extends PIXI.Container{
                         hex.children[0].tint = 0xDDAAAA
                     }
                     else {
-                        hex.children[0].tint =  0xFFFFFF;
+                        hex.children[0].tint =  0xFFFFFF
                     }
                 }
             }
