@@ -6,17 +6,28 @@ import { randomColor } from '../util/random'
 
 
 export class HexMap extends PIXI.Container {
+    flat: boolean
+    r!: number
+    h!: number
+    worldWidth!: number
+    worldHeight!: number
+    x!: number
+    y!: number
+    hCount!: number
+    wCount!: number
+    hexArray: Hex[]
+
     constructor(){
         super()
         this.flat = true
         this.hexArray = []
     }
-    setHexSize(r){
+    setHexSize(r: number){
         this.r = r
         this.h = r * Math.sqrt(3)
         return this
     }
-    setWorldSize(worldWidth, worldHeight){
+    setWorldSize(worldWidth: number, worldHeight: number){
         this.worldWidth = worldWidth
         this.worldHeight = worldHeight
         if(this.flat){
@@ -28,14 +39,13 @@ export class HexMap extends PIXI.Container {
         }
         return this;
     }
-    setHexMapSize(wCount, hCount){
+    setHexMapSize(wCount: number, hCount:number){
         this.wCount = wCount
         this.hCount = hCount
-        this.fitToWorld = false
         return this
     }
-    setFlat(flat){
-        this.flat=JSON.parse(flat)
+    setFlat(flat: boolean){
+        this.flat=flat
         return this
     }
     getHexMapSize(){
@@ -103,7 +113,7 @@ export class HexMap extends PIXI.Container {
         }
         return this
     }
-    getHexOddq(row,col){
+    getHexOddq(row:number ,col:number){
         return this.hexArray.find(function(element){
             return element.options.oddq.row==row && element.options.oddq.col==col
         })

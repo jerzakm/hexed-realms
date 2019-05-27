@@ -7,25 +7,40 @@ module.exports = {
     entry: {
         main: "./src/index.ts"
     },
+
     devtool: "none",
     devServer: {
        contentBase: '.',
        hot: true
     },
+
     output: {
-        filename: "[name].js",
+        filename: "[name].bundle.js",
         path: path.resolve(__dirname, "dist")
     },
+
+    resolve: {
+      extensions: [".tsx", ".ts", ".js"]
+    },
+
     optimization: {
       splitChunks: {
-        chunks: 'all'
-      }
+        cacheGroups: {
+          commons: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+        },
+      },
     },
+
     watch: true,
     watchOptions: {
         aggregateTimeout: 300,
         poll: 1000
     },
+
     module: {
         rules: [
           {
@@ -48,9 +63,7 @@ module.exports = {
           },
         ]
       },
-      resolve: {
-        extensions: [".tsx", ".ts", ".js"]
-      },
+
       plugins: [
         new HtmlWebPackPlugin({
           template: "src/index.html",
