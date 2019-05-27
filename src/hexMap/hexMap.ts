@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js"
 
 
 const loader = PIXI.Loader.shared;
-import { calcHexPoints, calcHexLocation, oddqToCube } from './hexMath'
+import * as HexMath from './hexMath'
 import { Hex } from './hex'
 import { randomColor } from '../util/random'
 
@@ -17,13 +17,14 @@ export class HexMap extends PIXI.Container {
     y!: number
     hCount!: number
     wCount!: number
-    hexArray: Hex[]    
+    hexArray: Hex[]
+    children!: Hex[]
 
     constructor(){
         super()
         this.flat = true
         this.hexArray = []
-    }    
+    }
 
     setHexSize(r: number): HexMap{
         this.r = r
@@ -74,8 +75,8 @@ export class HexMap extends PIXI.Container {
             for (let j = 0; j < this.hCount; j++) {
                 let hex = new Hex({
                     oddq: {col:i,row:j},
-                    loc: calcHexLocation(i,j,this.r,this.h,this.flat),
-                    cube: oddqToCube(i,j)
+                    loc: HexMath.calcHexLocation(i,j,this.r,this.h,this.flat),
+                    cube: HexMath.oddqToCube(i,j)
                 })
                 this.hexArray.push(hex)
             }
@@ -84,7 +85,7 @@ export class HexMap extends PIXI.Container {
     }
 
     drawPolyMap(){
-        const hexPointsPrecalc = calcHexPoints(this.r,this.h, this.flat)
+        const hexPointsPrecalc = HexMath.calcHexPoints(this.r,this.h, this.flat)
         const color = randomColor()
 
         for(let hex of this.hexArray) {
@@ -127,8 +128,9 @@ export class HexMap extends PIXI.Container {
             return element.options.oddq.row==row && element.options.oddq.col==col
         })
     }
-    getHexCube(cube){
+    getHexCube(cube: HexMath.HexCubeCoordinates){
         return this.children.find(function(element){
+            console.log(element)
             return element.options.cube.x==cube.x && element.options.cube.z==cube.z && element.options.cube.y==cube.y
         })
     }

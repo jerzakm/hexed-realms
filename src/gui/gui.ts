@@ -6,6 +6,7 @@ const Combokeys = require('combokeys')
 export let combokeys = new Combokeys(document.documentElement)
 
 interface GuiState {
+    mode: string
     brushSize: number
     textureSelectOpen: boolean
 }

@@ -1,25 +1,41 @@
-const PIXI = require('pixi.js')
+import * as PIXI from 'pixi.js'
 
 import {guiState} from '../gui/gui'
 const loader = PIXI.Loader.shared;
 import {oddqNeighbours, oddqToCube, cubeNeighbours}  from './hexMath'
 
-export class HexGraphics extends PIXI.Graphics {
-    constructor(options) {
-        super()
-        this.options = options
+interface HexOptions {
+    r: number
+    loc: {
+        x: number
+        y: number
     }
-}
-export class HexSprite extends PIXI.Sprite {
-    constructor(options) {
-        super()
-        this.options = options
-    }
+    fill: number
+    points: number[]
 }
 
+class HexGraphics extends PIXI.Graphics {
+    options: HexOptions
+
+    constructor(options: HexOptions) {
+        super()
+        this.options = options
+    }
+}
+class HexSprite extends PIXI.Sprite {
+    options: HexOptions
+
+    constructor(options: HexOptions, spriteOptions:any) {
+        super(spriteOptions)
+        this.options = options
+    }
+}
 
 export class Hex extends PIXI.Container{
-    constructor(options) {
+    options: HexOptions
+    hexPoly: HexGraphics | undefined
+
+    constructor(options: HexOptions) {
         super()
         this.options = this.defaults()
         this.options = Object.assign(this.options, options)
@@ -27,15 +43,19 @@ export class Hex extends PIXI.Container{
         this.y = this.options.loc.y
     }
 
-    defaults(){
+    defaults(): HexOptions{
         return {
-            //TODO FIX
-            //terrain: TERRAIN.water,
-            r: 10
+            r: 10,
+            loc: {
+                x: 0,
+                y: 0
+            },
+            fill: 0x000,
+            points: []
         }
     }
 
-    drawPoly(options){
+    drawPoly(options: HexOptions){
         const hexPoly = new HexGraphics(this.options)
         hexPoly.beginFill(options.fill)
         hexPoly.drawPolygon(options.points)

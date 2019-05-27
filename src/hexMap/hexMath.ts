@@ -65,13 +65,13 @@ export const oddqNeighbours = (col: number,row: number): OddqNeighbours => {
     }
 }
 
-interface HexCubeCoordinates {
+export interface HexCubeCoordinates {
     x: number
     y: number
     z: number
 }
 
-interface CubeNeighbours {
+export interface CubeNeighbours {
     N: HexCubeCoordinates
     NW: HexCubeCoordinates
     NE: HexCubeCoordinates
@@ -111,7 +111,7 @@ export const oddqToCube = (col: number,row: number): HexCubeCoordinates => {
 
 interface HexGridCoordinates {
     col: number
-    row: number    
+    row: number
 }
 
 export const cubeToOddq = (cube: HexCubeCoordinates): HexGridCoordinates => {
