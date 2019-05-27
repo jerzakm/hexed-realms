@@ -7,8 +7,7 @@
     "webpack": "webpack --config webpack.config.js --mode development",
     "browsersync": "browser-sync start --server --watch",
     "bs": "browser-sync dist -w",
-    "tslint": "tslint -c tslint.json 'src/**/*.ts'",
-    "start": "concurrently \"npm:webpack\" \"npm:bs\" \"npm:tslint\""
+    "start": "concurrently \"npm:webpack\" \"npm:bs\""
   },
   "repository": {
     "type": "git",
@@ -55,7 +54,6 @@
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
-    "ts-lint": "^4.5.1",
     "ts-loader": "^6.0.1",
     "typescript": "^3.4.5",
     "uuid": "^3.3.2",
