@@ -1,8 +1,12 @@
 const path = require("path")
 const HtmlWebPackPlugin = require("html-webpack-plugin")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const LinkTypePlugin = require('html-webpack-link-type-plugin').HtmlWebpackLinkTypePlugin
 
-let isDevelopment = true;
+
+let isDevelopment = true
+
+const ROOT = path.resolve(__dirname);
 
 module.exports = {
     mode: "development",
@@ -10,7 +14,7 @@ module.exports = {
         main: "./src/index.ts"
     },
 
-    devtool: "none",
+    devtool: "eval-source-map",
     devServer: {
        contentBase: '.',
        hot: true
@@ -22,7 +26,7 @@ module.exports = {
     },
 
     resolve: {
-      extensions: [".scss", ".css",".tsx", ".ts", ".js"]
+      extensions: [".tsx", ".ts", ".js", ".scss", ".css"]
     },
 
     optimization: {
@@ -44,17 +48,11 @@ module.exports = {
     },
 
     module: {
-        rules: [          
+        rules: [
           {
             test: /\.scss$/,
-            use: [
-                'style-loader',
-                {
-                    loader: 'css-loader'
-                },
-                'sass-loader?sourceMap'
-            ]
-        },
+            use: ['style-loader', 'css-loader', 'sass-loader']
+          },
           {
             test: /\.tsx?$/,
             loader: 'ts-loader',
@@ -68,13 +66,12 @@ module.exports = {
       },
 
       plugins: [
+        new MiniCssExtractPlugin({
+          filename: 'style.[contenthash].css',
+        }),
         new HtmlWebPackPlugin({
           template: "src/index.html",
           filename: "./index.html"
         }),
-        new MiniCssExtractPlugin({
-          filename: isDevelopment ? '[name].css' : '[name].[hash].css',
-          chunkFilename: isDevelopment ? '[id].css' : '[id].[hash].css'
-        })
       ]
 }
