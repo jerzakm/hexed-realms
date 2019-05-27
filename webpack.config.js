@@ -2,6 +2,8 @@ const path = require("path")
 const HtmlWebPackPlugin = require("html-webpack-plugin")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
+let isDevelopment = true;
+
 module.exports = {
     mode: "development",
     entry: {
@@ -20,7 +22,7 @@ module.exports = {
     },
 
     resolve: {
-      extensions: [".tsx", ".ts", ".js"]
+      extensions: [".scss", ".css",".tsx", ".ts", ".js"]
     },
 
     optimization: {
@@ -42,25 +44,26 @@ module.exports = {
     },
 
     module: {
-        rules: [
-          {
-            test: /\.html$/,
-            use: [{ loader: "html-loader", options: { minimize: true } }]
-          },
+        rules: [          
           {
             test: /\.scss$/,
             use: [
-              MiniCssExtractPlugin.loader,
-              "css-loader",
-              "postcss-loader",
-              "sass-loader"
+                'style-loader',
+                {
+                    loader: 'css-loader'
+                },
+                'sass-loader?sourceMap'
             ]
-          },
+        },
           {
             test: /\.tsx?$/,
             loader: 'ts-loader',
             exclude: /node_modules/,
           },
+          {
+            test: /\.html$/,
+            use: [{ loader: "html-loader", options: { minimize: true } }]
+          }
         ]
       },
 
@@ -70,8 +73,8 @@ module.exports = {
           filename: "./index.html"
         }),
         new MiniCssExtractPlugin({
-          filename: "[name].css",
-          chunkFilename: "[id].css"
+          filename: isDevelopment ? '[name].css' : '[name].[hash].css',
+          chunkFilename: isDevelopment ? '[id].css' : '[id].[hash].css'
         })
       ]
 }

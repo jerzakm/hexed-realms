@@ -1,4 +1,6 @@
-const PIXI = require('pixi.js')
+import * as PIXI from "pixi.js"
+
+
 const loader = PIXI.Loader.shared;
 import { calcHexPoints, calcHexLocation, oddqToCube } from './hexMath'
 import { Hex } from './hex'
@@ -15,18 +17,20 @@ export class HexMap extends PIXI.Container {
     y!: number
     hCount!: number
     wCount!: number
-    hexArray: Hex[]
+    hexArray: Hex[]    
 
     constructor(){
         super()
         this.flat = true
         this.hexArray = []
-    }
-    setHexSize(r: number){
+    }    
+
+    setHexSize(r: number): HexMap{
         this.r = r
         this.h = r * Math.sqrt(3)
         return this
     }
+
     setWorldSize(worldWidth: number, worldHeight: number){
         this.worldWidth = worldWidth
         this.worldHeight = worldHeight
@@ -39,15 +43,18 @@ export class HexMap extends PIXI.Container {
         }
         return this;
     }
+
     setHexMapSize(wCount: number, hCount:number){
         this.wCount = wCount
         this.hCount = hCount
         return this
     }
+
     setFlat(flat: boolean){
         this.flat=flat
         return this
     }
+
     getHexMapSize(){
         let mapSize = {
             wCount: this.wCount,
@@ -55,6 +62,7 @@ export class HexMap extends PIXI.Container {
         }
         return mapSize
     }
+
     generateWorld(){
         //TODO TERRAIN FIX
         //mapGen(this.hexArray, this.wCount, this.hCount)
@@ -78,7 +86,7 @@ export class HexMap extends PIXI.Container {
     drawPolyMap(){
         const hexPointsPrecalc = calcHexPoints(this.r,this.h, this.flat)
         const color = randomColor()
-        console.log(color)
+
         for(let hex of this.hexArray) {
             hex.drawPoly({
                 fill: color,
@@ -88,6 +96,7 @@ export class HexMap extends PIXI.Container {
         }
         return this
     }
+
     drawSpriteMap(){
         let texture = PIXI.Texture.from(loader.resources['033b89aa2712dfcd36fe854e4835030c'])
         let sprite = new PIXI.Sprite(texture)

@@ -1,10 +1,16 @@
 import {setPaintBrushTools} from './modes/paintbrush'
+
 const Combokeys = require('combokeys')
 
 
 export let combokeys = new Combokeys(document.documentElement)
 
-export let guiState = {
+interface GuiState {
+    brushSize: number
+    textureSelectOpen: boolean
+}
+
+export let guiState: GuiState = {
     brushSize: 1
 }
 let tools = []

@@ -1,8 +1,7 @@
-const PIXI = require('pixi.js')
+import * as PIXI from "pixi.js"
 
 export class Layer extends PIXI.Container {
-    constructor(){
-        super()
-        console.log(this)
+	constructor() {
+        super();
     }
 }

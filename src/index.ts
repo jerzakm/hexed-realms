@@ -1,13 +1,15 @@
 import { HexMap } from "./hexMap/hexMap"
 import {initGui} from './gui/gui'
 import {loadTileSetThenDo, tileSetRef} from './tileSet/loader'
+import "./_scss/main.scss"
 
-const PIXI = require('pixi.js')
-const Viewport = require('pixi-viewport')
+
+import * as PIXI from "pixi.js"
+import Viewport from "pixi-viewport";
 
 
 let app: PIXI.Application
-let viewport: Viewport
+let viewport: any
 
 
 let options = {
@@ -24,7 +26,7 @@ app = new PIXI.Application({
     height: window.innerHeight,
     resolution: window.devicePixelRatio,
     antialias: false,
-    powerPreference: 'high-performance'
+    powerPreference: 'high-performance',    
 })
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
@@ -87,14 +89,17 @@ function drawWorld()
     viewport.addChild(hexMap2)
 
     let testButton = document.getElementById('global-test-btn')
-    testButton.addEventListener('click', function(){
-        viewport.swapChildren (hexMap, hexMap2)
-    })
+    
+    if(testButton){
+        testButton.addEventListener('click', function(){
+            viewport.swapChildren (hexMap, hexMap2)
+        })
+    }    
 }
 
 loadTileSetThenDo(onLoad)
 
-function onLoad() {
+function onLoad(): void {
     makeWorldViewport()
     resize()
     window.addEventListener('resize', resize)

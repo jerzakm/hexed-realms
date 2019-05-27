@@ -1,10 +1,11 @@
 const PIXI = require('pixi.js')
 const loader = PIXI.Loader.shared
-export let tileSetRef
-export let tileTextureData
 
+//todo classes/interfaces for tilesetRefs
+export let tileSetRef: any
+export let tileTextureData: any
 
-export async function loadTileSetThenDo(onComplete) {
+export async function loadTileSetThenDo(onComplete: any) {
     const ref = await fetch('/assets/tileset/tilesRef64.json')
     const tile = await fetch('/assets/tileset/tilesData64.json')
     tileTextureData = await tile.json()

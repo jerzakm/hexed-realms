@@ -1,4 +1,9 @@
-export const calcHexPoints = (r,h, flat) => {
+interface HexPosition {
+    x: number,
+    y: number
+}
+
+export const calcHexPoints = (r: number,h: number, flat: boolean): number[] => {
     if(flat) {
         return [-r, 0,-r/2, h/2,r/2, h/2, r, 0, r/2, -h/2, -r/2, -h/2]
     } else {
@@ -6,7 +11,7 @@ export const calcHexPoints = (r,h, flat) => {
     }
 }
 
-export const calcHexLocation = (i,j,r,h,flat) => {
+export const calcHexLocation = (i: number,j: number,r: number,h: number,flat: boolean): HexPosition => {
     let loc = {
         x: 0,
         y: 0
@@ -30,7 +35,18 @@ export const calcHexLocation = (i,j,r,h,flat) => {
     return loc;
 }
 
-export const oddqNeighbours = (col,row) => {
+interface OddqNeighbours {
+    core: number[]
+    array: number[][]
+    N: number[]
+    NW: number[]
+    NE: number[]
+    S: number[]
+    SW: number[]
+    SE: number[]
+}
+
+export const oddqNeighbours = (col: number,row: number): OddqNeighbours => {
     const N = [col,row-1]
     const NW = [row-1,col]
     const NE = [row+1,col]
@@ -49,7 +65,23 @@ export const oddqNeighbours = (col,row) => {
     }
 }
 
-export const cubeNeighbours = (cube) => {
+interface HexCubeCoordinates {
+    x: number
+    y: number
+    z: number
+}
+
+interface CubeNeighbours {
+    N: HexCubeCoordinates
+    NW: HexCubeCoordinates
+    NE: HexCubeCoordinates
+    S: HexCubeCoordinates
+    SE: HexCubeCoordinates
+    SW: HexCubeCoordinates
+    array: HexCubeCoordinates[]
+}
+
+export const cubeNeighbours = (cube: HexCubeCoordinates) => {
     let N = {x: cube.x, y: cube.y+1, z: cube.z-1}
     let NW = {x: cube.x-1, y: cube.y+1, z: cube.z}
     let NE = {x: cube.x+1, y: cube.y, z: cube.z-1}
@@ -67,7 +99,7 @@ export const cubeNeighbours = (cube) => {
     }
 }
 
-export const oddqToCube = (col,row) => {
+export const oddqToCube = (col: number,row: number): HexCubeCoordinates => {
     const x = col
     const z = row - (col - (col&1)) / 2
     return {
@@ -77,7 +109,12 @@ export const oddqToCube = (col,row) => {
     }
 }
 
-export const cubeToOddq = (cube) => {
+interface HexGridCoordinates {
+    col: number
+    row: number    
+}
+
+export const cubeToOddq = (cube: HexCubeCoordinates): HexGridCoordinates => {
     return {
         col: cube.x,
         row: cube.z + (cube.x - (cube.x&1)) / 2

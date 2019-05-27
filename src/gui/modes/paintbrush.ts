@@ -1,9 +1,11 @@
 import {tileSetRef, tileTextureData} from '../../tileSet/loader'
 import {guiState, combokeys} from '../gui'
-const PIXI = require('pixi.js')
+
+import * as PIXI from "pixi.js"
+
 const loader = PIXI.Loader.shared;
 
-export function setPaintBrushTools(parent){
+export function setPaintBrushTools(parent: any){
     drawBrushSizeSlider()
     drawHotbar()
     setHotkeys()
@@ -28,13 +30,13 @@ const drawHotbar = () => {
 
 
 const drawBrushSizeSlider = () => {
-    const brushSliderValue = () => {
+    const brushSliderValue = (): number => {
         //brush size slider values are non linear
-        return Math.round(Math.pow(1.0868, input.value))
+        return Math.round(Math.pow(1.0868, parseInt(input.value,10)))
     }
-    let container = document.createElement('div')
-    container.className='tool-setting-group'
-    container.id='paint-brush-tools'
+    let toolGroup = document.createElement('div')
+    toolGroup.className='tool-setting-group'
+    toolGroup.id='paint-brush-tools'
     let label = document.createElement('label')
     label.className= 'tool-setting-group-label'
     label.textContent='Brush size'
@@ -42,23 +44,26 @@ const drawBrushSizeSlider = () => {
     input.className='range-slider'
     input.type='range'
     input.id='paint-tool-brush-size'
-    input.min=1
-    input.max=50
-    input.value=3
+    input.min = `${1}`    
+    input.max = `${50}`
+    input.value=`${3}`
     input.addEventListener('input', function(){
-        label2.textContent = brushSliderValue()
+        label2.textContent = `${brushSliderValue()}`
         guiState.brushSize = brushSliderValue()
     })
     let label2 = document.createElement('label')
     label2.className = 'tool-setting-group-label'
-    label2.textContent = brushSliderValue()
-    container.appendChild(label)
-    container.appendChild(input)
-    container.appendChild(label2)
-    document.getElementById('tool-settings-box').appendChild(container)
+    label2.textContent = `${brushSliderValue()}`
+    toolGroup.appendChild(label)
+    toolGroup.appendChild(input)
+    toolGroup.appendChild(label2)
+    let toolContainer = document.getElementById('tool-settings-box');
+    if(toolContainer){
+        toolContainer.appendChild(toolGroup)
+    }    
 }
 
-const makeGroups = (hotbarContainer) => {
+const makeGroups = (hotbarContainer: HTMLElement) => {
     let key = 1
     for(let group of tileSetRef.children){
         let groupIcon
@@ -111,7 +116,7 @@ const setHotkeys = () => {
 
 let lastKeyPress = {}
 
-const hotbarKeyPress = (hotkey) => {
+const hotbarKeyPress = (hotkey: string) => {
     if(Date.now()-lastKeyPress[`${hotkey}`]<1000){
         if(!guiState.textureSelectOpen) {
             drawTextureSelect(hotkey)

@@ -34,6 +34,7 @@
     "yy-random": "^1.7.3"
   },
   "devDependencies": {
+    "@types/combokeys": "^2.4.6",
     "@types/node": "^12.0.2",
     "@types/pixi.js": "^4.8.7",
     "@types/webpack-env": "^1.13.9",
@@ -46,9 +47,10 @@
     "html-webpack-plugin": "^3.2.0",
     "md5": "^2.2.1",
     "mini-css-extract-plugin": "^0.5.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.12.0",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
     "ts-loader": "^6.0.1",
     "typescript": "^3.4.5",
     "uuid": "^3.3.2",
