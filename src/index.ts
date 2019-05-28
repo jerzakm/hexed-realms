@@ -11,7 +11,6 @@ import * as style from './_scss/style'
 let app: PIXI.Application
 let viewport: any
 
-
 let options = {
     worldWidth: 2800,
     worldHeight: 1400,

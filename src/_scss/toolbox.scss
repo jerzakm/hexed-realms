@@ -1,12 +1,9 @@
 .tool-settings-box {
     //position: fixed;
     @extend %flex-center;
-    flex-direction: row;
-    z-index: 1;
-    background: $toolbox-background;
-    padding: 10px;
-    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-    border-radius: 7px;
+    @extend %window;
+    flex-direction: row;    
+    background: $toolbox-background;    
 }
 
 #tool-settings-box {

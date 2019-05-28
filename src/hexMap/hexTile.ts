@@ -113,4 +113,3 @@ export class SpriteHex extends PIXI.Sprite {
         }
     }
 }
-
