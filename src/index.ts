@@ -26,11 +26,10 @@ app = new PIXI.Application({
     height: window.innerHeight,
     resolution: window.devicePixelRatio,
     antialias: false,
-    powerPreference: 'high-performance',
+    powerPreference: 'high-performance'
 })
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
-//app.view.setAttribute(oncontextmenu,"return false")
 document.body.appendChild(app.view)
 app.view.style.position = 'fixed'
 app.view.style.width = '100vw'
@@ -46,7 +45,6 @@ function makeWorldViewport()
         .drag({ clampWheel: true, mouseButtons:'right'})
         .wheel({ smooth: 2 })
         .pinch()
-        //.decelerate()
 }
 
 function resize()
@@ -69,32 +67,14 @@ function drawWorld()
     viewport.fitWorld()
     border()
 
-    let hexMap = new HexMap()
+    let testMap = new HexMap()
         .setHexSize(options.hexSize)
         .setFlat(options.flat)
         .setWorldSize(options.worldWidth, options.worldHeight)
+        .drawHexMap()
         .align()
-        .setup()
-        .drawSpriteMap()
 
-    let hexMap2 = new HexMap()
-        .setHexSize(options.hexSize)
-        .setFlat(options.flat)
-        .setWorldSize(options.worldWidth, options.worldHeight)
-        .align()
-        .setup()
-        .drawSpriteMap()
-
-    viewport.addChild(hexMap)
-    viewport.addChild(hexMap2)
-
-    let testButton = document.getElementById('global-test-btn')
-
-    if(testButton){
-        testButton.addEventListener('click', function(){
-            viewport.swapChildren (hexMap, hexMap2)
-        })
-    }
+    viewport.addChild(testMap)
 }
 
 loadTileSetThenDo(onLoad)

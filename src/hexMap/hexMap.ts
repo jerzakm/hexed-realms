@@ -1,10 +1,11 @@
 import * as PIXI from "pixi.js"
 
 
-const loader = PIXI.Loader.shared;
+const loader: any = PIXI.Loader.shared;
 import * as HexMath from './hexMath'
 import { Hex } from './hex'
 import { randomColor } from '../util/random'
+import * as TestHex from './hexNew'
 
 
 export class HexMap extends PIXI.Container {
@@ -18,12 +19,14 @@ export class HexMap extends PIXI.Container {
     hCount!: number
     wCount!: number
     hexArray: Hex[]
+    testHexArray: TestHex.SpriteHex[]
     children!: Hex[]
 
     constructor(){
         super()
         this.flat = true
         this.hexArray = []
+        this.testHexArray = []
     }
 
     setHexSize(r: number): HexMap{
@@ -70,53 +73,39 @@ export class HexMap extends PIXI.Container {
         return this
     }
 
-    setup(){
+    drawHexMap(){
+        let texture = PIXI.Texture.from(loader.resources['empty'])
+        let sprite = new PIXI.Sprite(texture)
+
+        const hexScale = ((2*this.r)/sprite.width)
+
         for (let i = 0; i < this.wCount; i++) {
             for (let j = 0; j < this.hCount; j++) {
-                let hex = new Hex({
+                let hexOptions = {
+                    r: this.r,
+                    h: this.h,
+                    flat: this.flat,
+                    hexScale: hexScale,
                     oddq: {col:i,row:j},
-                    loc: HexMath.calcHexLocation(i,j,this.r,this.h,this.flat),
-                    cube: HexMath.oddqToCube(i,j)
-                })
-                this.hexArray.push(hex)
+                    xTransform: 0,
+                    yTransform: -6*hexScale
+                }
+
+                let hex = new TestHex.SpriteHex(texture, hexOptions)
+                this.addChild(hex)
+                this.testHexArray.push(hex)
             }
         }
-        return this
-    }
 
-    drawPolyMap(){
-        const hexPointsPrecalc = HexMath.calcHexPoints(this.r,this.h, this.flat)
-        const color = randomColor()
+        console.log(this.children)
 
-        for(let hex of this.hexArray) {
-            hex.drawPoly({
-                fill: color,
-                points: hexPointsPrecalc
-            })
-            this.addChild(hex);
-        }
-        return this
-    }
-
-    drawSpriteMap(){
-        let texture = PIXI.Texture.from(loader.resources['033b89aa2712dfcd36fe854e4835030c'])
-        let sprite = new PIXI.Sprite(texture)
-        const scale = ((2*this.r)/sprite.width)
-        for(let hex of this.hexArray) {
-            hex.drawSprite({
-                scale: scale,
-                xTransform: 0,
-                yTransform: -6*scale
-            })
-            this.addChild(hex);
-        }
         return this
     }
 
     align(){
         if(this.flat){
-            this.x = this.r
-            this.y = 0.8*this.r
+            //this.x = this.r
+            this.y = -this.r/3
         }else {
             this.x = this.h
             this.y = this.r
@@ -130,7 +119,6 @@ export class HexMap extends PIXI.Container {
     }
     getHexCube(cube: HexMath.HexCubeCoordinates){
         return this.children.find(function(element){
-            console.log(element)
             return element.options.cube.x==cube.x && element.options.cube.z==cube.z && element.options.cube.y==cube.y
         })
     }

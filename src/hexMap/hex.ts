@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js'
 
 import {guiState} from '../gui/gui'
-const loader = PIXI.Loader.shared;
+const loader = PIXI.Loader.shared
 import {oddqNeighbours, oddqToCube, cubeNeighbours}  from './hexMath'
 
-interface HexOptions {
+interface IHexOptions {
     r: number
     loc: {
         x: number
@@ -70,7 +70,6 @@ export class Hex extends PIXI.Container{
         hexPoly.on('pointerover', () => {
             if(guiState.mode=='paint-brush'){
                 let hexArray = this.parent.children
-                console.log(hexArray)
                 const a = this.options.cube
                 for(let hex of hexArray) {
                     const b = hex.options.cube

@@ -109,7 +109,7 @@ export const oddqToCube = (col: number,row: number): HexCubeCoordinates => {
     }
 }
 
-interface HexGridCoordinates {
+export interface HexGridCoordinates {
     col: number
     row: number
 }

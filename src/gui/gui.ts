@@ -9,10 +9,12 @@ interface GuiState {
     mode: string
     brushSize: number
     textureSelectOpen: boolean
+    drawMode: boolean
 }
 
 export let guiState: GuiState = {
-    brushSize: 1
+    brushSize: 1,
+    drawMode: false
 }
 let tools = []
 
