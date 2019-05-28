@@ -15,7 +15,7 @@ let viewport: any
 let options = {
     worldWidth: 2800,
     worldHeight: 1400,
-    hexSize: 25,
+    hexSize: 60,
     flat: true,
     render: drawWorld
 }
@@ -26,7 +26,8 @@ app = new PIXI.Application({
     height: window.innerHeight,
     resolution: window.devicePixelRatio,
     antialias: false,
-    powerPreference: 'high-performance'
+    powerPreference: 'high-performance',
+    forceCanvas: true
 })
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST

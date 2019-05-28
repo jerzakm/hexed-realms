@@ -3,9 +3,8 @@ import * as PIXI from "pixi.js"
 
 const loader: any = PIXI.Loader.shared;
 import * as HexMath from './hexMath'
-import { Hex } from './hex'
 import { randomColor } from '../util/random'
-import * as TestHex from './hexNew'
+import * as HexTile from './hexTile'
 
 
 export class HexMap extends PIXI.Container {
@@ -18,15 +17,13 @@ export class HexMap extends PIXI.Container {
     y!: number
     hCount!: number
     wCount!: number
-    hexArray: Hex[]
-    testHexArray: TestHex.SpriteHex[]
-    children!: Hex[]
+    hexArray: HexTile.SpriteHex[]
+    children!: HexTile.SpriteHex[]
 
     constructor(){
         super()
         this.flat = true
         this.hexArray = []
-        this.testHexArray = []
     }
 
     setHexSize(r: number): HexMap{
@@ -91,13 +88,11 @@ export class HexMap extends PIXI.Container {
                     yTransform: -6*hexScale
                 }
 
-                let hex = new TestHex.SpriteHex(texture, hexOptions)
+                let hex = new HexTile.SpriteHex(texture, hexOptions)
                 this.addChild(hex)
-                this.testHexArray.push(hex)
+                this.hexArray.push(hex)
             }
         }
-
-        console.log(this.children)
 
         return this
     }
@@ -111,15 +106,5 @@ export class HexMap extends PIXI.Container {
             this.y = this.r
         }
         return this
-    }
-    getHexOddq(row:number ,col:number){
-        return this.hexArray.find(function(element){
-            return element.options.oddq.row==row && element.options.oddq.col==col
-        })
-    }
-    getHexCube(cube: HexMath.HexCubeCoordinates){
-        return this.children.find(function(element){
-            return element.options.cube.x==cube.x && element.options.cube.z==cube.z && element.options.cube.y==cube.y
-        })
     }
 }

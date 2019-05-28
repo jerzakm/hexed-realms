@@ -2,7 +2,8 @@ import * as PIXI from "pixi.js"
 import * as HexMath from "./hexMath"
 
 import {guiState} from '../gui/gui'
-const loader = PIXI.Loader.shared
+import { HexMap } from "./hexMap";
+const loader: any = PIXI.Loader.shared
 
 interface IHexOptions {
     r: number
@@ -20,6 +21,13 @@ export class SpriteHex extends PIXI.Sprite {
      * @param r Hex radius
      * @param h Hex height
      * @param flat Is hex flat?
+     * @param loc.x X pixel position within a container
+     * @param loc.y Y pixel position within a container
+     * @param oddq oddq grid location
+     * @param cube cubic location (x,y,z)
+     * @param hexScale sprite scale based on hex dimensions
+     * @param xTransform hex relative horizontal position to it's original location
+     * @param yTransform hex relative vertical position to it's original location 
      */
     r: number
     h: number
@@ -33,6 +41,7 @@ export class SpriteHex extends PIXI.Sprite {
     hexScale: number
     xTransform: number
     yTransform: number
+    parent!: HexMap
 
 
     constructor(spriteOptions: any, hexOptions: IHexOptions) {
@@ -53,6 +62,9 @@ export class SpriteHex extends PIXI.Sprite {
         this.setupInteraction()
     }
 
+    /**
+     * @description Calculates hex variables from given options
+     */
     private math(){
         this.setTransform(0,0,this.hexScale,this.hexScale)
         this.loc = HexMath.calcHexLocation(this.oddq.col,this.oddq.row,this.r,this.h,this.flat)
@@ -61,6 +73,9 @@ export class SpriteHex extends PIXI.Sprite {
         this.cube = HexMath.oddqToCube(this.oddq.col,this.oddq.row)
     }
 
+    /**
+    * @description Hex interaction listener
+    */
     private setupInteraction(){
         this.on('pointerdown', () => {
             guiState.drawMode = true
@@ -72,13 +87,16 @@ export class SpriteHex extends PIXI.Sprite {
         })
     }
 
+    /**
+     * @description hex painting function
+     */
     private paint() {
         if(guiState.mode=='paint-brush'){
-            //TODO ugly hack - fix
-            let hexArray = this.parent['testHexArray']
+            let hexArray = this.parent.hexArray
 
             const originCube = this.cube
 
+            //todo optimize
             for(let hex of hexArray) {
                 const otherCube = hex.cube
                 const distance = (Math.abs(originCube.x - otherCube.x) + Math.abs(originCube.y - otherCube.y) + Math.abs(originCube.z - otherCube.z)) / 2
@@ -94,5 +112,5 @@ export class SpriteHex extends PIXI.Sprite {
             }
         }
     }
-
 }
+

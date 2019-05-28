@@ -5,18 +5,30 @@ const Combokeys = require('combokeys')
 
 export let combokeys = new Combokeys(document.documentElement)
 
-interface GuiState {
+interface IGuiState {
     mode: string
     brushSize: number
     textureSelectOpen: boolean
     drawMode: boolean
+    currentHexTexture: string
 }
 
-export let guiState: GuiState = {
+export let guiState: IGuiState = {
+    mode: 'paint-brush',
     brushSize: 1,
-    drawMode: false
+    drawMode: false,
+    textureSelectOpen: false,
+    currentHexTexture: 'empty'
 }
-let tools = []
+
+interface IGuiTool {
+    name: string
+    icon: string
+    alt: string
+    mode: string
+}
+
+let tools: IGuiTool[] = []
 
 export function initGui() {
     setupToolbox()
@@ -33,7 +45,7 @@ function drawToolbox() {
     for (let tool of tools){
         let toolButton = document.createElement('button')
         toolButton.className = 'toolbox-item'
-        toolButton.alt=`${tool.alt}`
+        //toolButton.alt=`${tool.alt}`
         toolButton.id=`${tool.mode}-tool`
         toolButton.addEventListener('click', function(){
             swapMode(tool.mode)
@@ -66,26 +78,32 @@ function setupToolbox() {
     })
 }
 
-function swapMode(mode) {
+function swapMode(mode: string) {
     //clear 'active tool' class from tags and add it to the activated mode
-    const buttons = document.getElementsByClassName('toolbox-item')
+    const buttons = [].slice.call(document.getElementsByClassName('toolbox-item'))
+    
     for(let button of buttons) {
         button.classList.remove('toolbox-item-selected')
         if(button.id==`${mode}-tool`) {
             button.classList.add('toolbox-item-selected')
         }
     }
+
     combokeys.detach()
     combokeys = new Combokeys(document.documentElement)
     guiState.mode = mode
     drawSelectedToolSettings(mode)
 }
 
-function drawSelectedToolSettings(mode){
+function drawSelectedToolSettings(mode: string){
     let settingsContainer = document.getElementById('tool-settings-box')
-    while(settingsContainer.firstChild) {
-        settingsContainer.removeChild(settingsContainer.firstChild);
-    }
+
+    if(settingsContainer){
+        while(settingsContainer.firstChild) {
+            settingsContainer.removeChild(settingsContainer.firstChild);
+        }
+    }    
+
     switch(mode){
         case 'paint-brush':
             setPaintBrushTools(settingsContainer)

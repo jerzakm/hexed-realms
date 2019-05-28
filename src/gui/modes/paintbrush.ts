@@ -94,7 +94,9 @@ const makeGroups = (hotbarContainer: HTMLElement) => {
         hotbarContainer.appendChild(hotbarButton)
 
         hotbarButton.addEventListener("click", ()=> {
-            hotbarKeyPress(hotbarNumberLabel.textContent)
+            if(hotbarNumberLabel.textContent){
+                hotbarKeyPress(hotbarNumberLabel.textContent)
+            }            
         });
     }
 }
@@ -114,7 +116,7 @@ const setHotkeys = () => {
     combokeys.bind('esc', function() { destroyTextureSelect() });
 }
 
-let lastKeyPress = {}
+let lastKeyPress:any  = {}
 
 const hotbarKeyPress = (hotkey: string) => {
     if(Date.now()-lastKeyPress[`${hotkey}`]<1000){
@@ -128,7 +130,7 @@ const hotbarKeyPress = (hotkey: string) => {
         destroyTextureSelect()
     }
     lastKeyPress[`${hotkey}`] = Date.now()
-    let hotbarElements = document.getElementsByClassName('hotbar-element')
+    let hotbarElements = [].slice.call(document.getElementsByClassName('hotbar-element'))
     for(let hotbarElement of hotbarElements) {
         for(let child of hotbarElement.children){
             if(child.className=='hotbar-key'){
@@ -152,7 +154,7 @@ function destroyTextureSelect() {
     }
 }
 
-function drawTextureSelect(group){
+function drawTextureSelect(group:any){
     destroyTextureSelect()
     let selected = parseInt(group, 10) -1
     let previous = document.getElementById('texture-group-expanded-select-container')
@@ -216,8 +218,8 @@ function drawTextureSelect(group){
 }
 
 
-function selectNewTexture(group, texture){
-    let hotbarElements = document.getElementsByClassName('hotbar-element')
+function selectNewTexture(group:any, texture: string){
+    let hotbarElements = [].slice.call(document.getElementsByClassName('hotbar-element'))
     for(let hotbarElement of hotbarElements) {
         for(let child of hotbarElement.children){
             if(child.className=='hotbar-key'){
