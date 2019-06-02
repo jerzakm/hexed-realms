@@ -1,4 +1,5 @@
 import {setPaintBrushTools} from './modes/paintbrush'
+import * as Layers from '../layers/layersComponent'
 
 const Combokeys = require('combokeys')
 
@@ -33,8 +34,10 @@ let tools: IGuiTool[] = []
 export function initGui() {
     setupToolbox()
     drawToolbox()
-    swapMode('paint-brush')
     drawGlobalTestBtn()
+    Layers.createLayerContainer()
+
+    swapMode('paint-brush')
 }
 
 //draws dom toolbox and sets up button listeners- paintbrush, fill etc
@@ -81,7 +84,7 @@ function setupToolbox() {
 function swapMode(mode: string) {
     //clear 'active tool' class from tags and add it to the activated mode
     const buttons = [].slice.call(document.getElementsByClassName('toolbox-item'))
-    
+
     for(let button of buttons) {
         button.classList.remove('toolbox-item-selected')
         if(button.id==`${mode}-tool`) {
@@ -102,7 +105,7 @@ function drawSelectedToolSettings(mode: string){
         while(settingsContainer.firstChild) {
             settingsContainer.removeChild(settingsContainer.firstChild);
         }
-    }    
+    }
 
     switch(mode){
         case 'paint-brush':
@@ -113,6 +116,9 @@ function drawSelectedToolSettings(mode: string){
             break
     }
 }
+
+
+let eventQueue = []
 
 function drawGlobalTestBtn(){
     let testButton = document.createElement('button')
