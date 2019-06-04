@@ -6,9 +6,9 @@ import * as PIXI from "pixi.js"
 import Viewport from "pixi-viewport"
 import "../src/_scss/main.scss"
 import * as style from './_scss/style'
+import * as r from './core/renderer'
 
 
-let app: PIXI.Application
 let viewport: any
 
 let options = {
@@ -19,38 +19,23 @@ let options = {
     render: drawWorld
 }
 
-app = new PIXI.Application({
-    transparent: true,
-    width: window.innerWidth,
-    height: window.innerHeight,
-    resolution: window.devicePixelRatio,
-    antialias: false,
-    powerPreference: 'high-performance',
-    forceCanvas: true
-})
-
-PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
-document.body.appendChild(app.view)
-app.view.style.position = 'fixed'
-app.view.style.width = '100vw'
-app.view.style.height = '100vh'
-
 function makeWorldViewport()
 {
-    viewport = app.stage.addChild(new Viewport({
-        interaction: app.renderer.plugins.interaction,
+    viewport = new Viewport({
+        interaction: r.renderer.plugins.interaction,
         passiveWheel: false
-    }))
+    })
     viewport
         .drag({ clampWheel: true, mouseButtons:'right'})
         .wheel({ smooth: 2 })
         .pinch()
+    r.stage.addChild(viewport)
 }
 
 function resize()
 {
-    app.renderer.resize(window.innerWidth, window.innerHeight)
-    viewport.resize(window.innerWidth, window.innerHeight, options.worldWidth, options.worldHeight)
+    r.renderer.resize(r.renderer.screen.width, r.renderer.screen.height-5)
+    viewport.resize(r.renderer.screen.width, r.renderer.screen.height-5, options.worldWidth, options.worldHeight)
 }
 
 function border()
@@ -80,9 +65,10 @@ function drawWorld()
 loadTileSetThenDo(onLoad)
 
 function onLoad(): void {
+    r.initRenderer()
     makeWorldViewport()
     resize()
     window.addEventListener('resize', resize)
-    initGui()
     drawWorld()
+    initGui()
 }

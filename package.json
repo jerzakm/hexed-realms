@@ -29,6 +29,7 @@
     "pixi-filters": "^3.0.2",
     "pixi-viewport": "^3.22.0",
     "pixi.js": "^5.0.0-rc.2",
+    "vue": "^2.6.10",
     "yy-counter": "^2.1.0",
     "yy-fps": "^1.0.0",
     "yy-random": "^1.7.3"
