@@ -9,7 +9,7 @@ import * as style from './_scss/style'
 import * as r from './core/renderer'
 
 
-let viewport: any
+export let viewport: any
 
 let options = {
     worldWidth: 2800,
@@ -52,14 +52,14 @@ function drawWorld()
     viewport.fitWorld()
     border()
 
-    let testMap = new HexMap()
-        .setHexSize(options.hexSize)
-        .setFlat(options.flat)
-        .setWorldSize(options.worldWidth, options.worldHeight)
-        .drawHexMap()
-        .align()
+    // let testMap = new HexMap()
+    //     .setHexSize(options.hexSize)
+    //     .setFlat(options.flat)
+    //     .setWorldSize(options.worldWidth, options.worldHeight)
+    //     .drawHexMap()
+    //     .align()
 
-    viewport.addChild(testMap)
+    // viewport.addChild(testMap)
 }
 
 loadTileSetThenDo(onLoad)

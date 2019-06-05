@@ -1,5 +1,8 @@
 import {setPaintBrushTools} from './modes/paintbrush'
 import * as Layers from '../layers/layersComponent'
+import { viewport } from '..';
+import { HexMap } from '../hexMap/hexMap';
+import { Layer } from '../layers/layer';
 
 const Combokeys = require('combokeys')
 
@@ -42,23 +45,27 @@ export function initGui() {
 
 //draws dom toolbox and sets up button listeners- paintbrush, fill etc
 function drawToolbox() {
-    let toolboxContainer = document.createElement('nav')
-    toolboxContainer.className = 'toolbox'
-    toolboxContainer.id = 'toolbox-container'
-    for (let tool of tools){
-        let toolButton = document.createElement('button')
-        toolButton.className = 'toolbox-item'
-        //toolButton.alt=`${tool.alt}`
-        toolButton.id=`${tool.mode}-tool`
-        toolButton.addEventListener('click', function(){
-            swapMode(tool.mode)
-        })
-        let toolIcon = document.createElement('i')
-        toolIcon.className = `fas fa-${tool.icon}`;
-        toolButton.appendChild(toolIcon)
-        toolboxContainer.appendChild(toolButton)
+    if(document.getElementById('toolbox-container')){
+
+    } else {
+        let toolboxContainer = document.createElement('nav')
+        toolboxContainer.className = 'toolbox'
+        toolboxContainer.id = 'toolbox-container'
+        for (let tool of tools){
+            let toolButton = document.createElement('button')
+            toolButton.className = 'toolbox-item'
+            //toolButton.alt=`${tool.alt}`
+            toolButton.id=`${tool.mode}-tool`
+            toolButton.addEventListener('click', function(){
+                swapMode(tool.mode)
+            })
+            let toolIcon = document.createElement('i')
+            toolIcon.className = `fas fa-${tool.icon}`;
+            toolButton.appendChild(toolIcon)
+            toolboxContainer.appendChild(toolButton)
+        }
+        document.body.appendChild(toolboxContainer)
     }
-    document.body.appendChild(toolboxContainer)
 }
 
 
@@ -126,7 +133,26 @@ function drawGlobalTestBtn(){
     testButton.id = 'global-test-btn'
     testButton.innerText = 'test'
     testButton.addEventListener('click', function(){
-        console.log('test button...')
+        let layer = new Layer('test layer')
+
+        let options = {
+            worldWidth: 2800,
+            worldHeight: 1400,
+            hexSize: 60,
+            flat: true
+        }
+        let testMap = new HexMap()
+        .setHexSize(options.hexSize)
+        .setFlat(options.flat)
+        .setWorldSize(options.worldWidth, options.worldHeight)
+        .drawHexMap()
+        .align()
+
+        layer.addChild(testMap)
+
+        viewport.addChild(layer)
+
+        Layers.makeLayer(layer)
     })
     document.body.appendChild(testButton)
 }

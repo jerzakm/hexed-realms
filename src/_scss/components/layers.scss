@@ -36,6 +36,12 @@ layer {
     }
 }
 
+.layer-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
 .layer-preview {
     grid-area: menu;
     width: 40px;
@@ -56,4 +62,16 @@ layer {
         flex: 1 0 51%;
         padding: 3px;
     }
+}
+
+.layer-window-buttonbar{
+ @extend %flex-center;
+ width: 100%;
+ justify-content: flex-start;
+ button {
+     margin-left: 10px;
+     i{
+         font-size: 1.2rem;
+     }
+ }
 }

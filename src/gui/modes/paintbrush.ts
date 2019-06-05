@@ -14,18 +14,20 @@ export function setPaintBrushTools(parent: any){
 }
 
 const drawHotbar = () => {
-    let center = document.createElement('container')
-    center.className = 'flex-center-container'
-    center.id = 'terrain-hotbar-container'
+    if(!document.getElementById('terrain-hotbar-container')){
+        let center = document.createElement('container')
+        center.className = 'flex-center-container'
+        center.id = 'terrain-hotbar-container'
 
-    let hotbarContainer = document.createElement('hotbar')
-    hotbarContainer.className = 'tool-settings-box'
-    hotbarContainer.id = 'terrain-hotbar'
+        let hotbarContainer = document.createElement('hotbar')
+        hotbarContainer.className = 'tool-settings-box'
+        hotbarContainer.id = 'terrain-hotbar'
 
-    makeGroups(hotbarContainer)
+        makeGroups(hotbarContainer)
 
-    center.appendChild(hotbarContainer)
-    document.body.appendChild(center)
+        center.appendChild(hotbarContainer)
+        document.body.appendChild(center)
+    }
 }
 
 
@@ -44,7 +46,7 @@ const drawBrushSizeSlider = () => {
     input.className='range-slider'
     input.type='range'
     input.id='paint-tool-brush-size'
-    input.min = `${1}`    
+    input.min = `${1}`
     input.max = `${50}`
     input.value=`${3}`
     input.addEventListener('input', function(){
@@ -60,7 +62,7 @@ const drawBrushSizeSlider = () => {
     let toolContainer = document.getElementById('tool-settings-box');
     if(toolContainer){
         toolContainer.appendChild(toolGroup)
-    }    
+    }
 }
 
 const makeGroups = (hotbarContainer: HTMLElement) => {
@@ -96,7 +98,7 @@ const makeGroups = (hotbarContainer: HTMLElement) => {
         hotbarButton.addEventListener("click", ()=> {
             if(hotbarNumberLabel.textContent){
                 hotbarKeyPress(hotbarNumberLabel.textContent)
-            }            
+            }
         });
     }
 }
