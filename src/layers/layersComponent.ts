@@ -1,4 +1,5 @@
-import { Layer } from "./layer";
+import { Layer } from './layer'
+import * as LayerHandler from './layerHandler'
 
 /**
  * @function createLayerContainer - creates layer container
@@ -26,6 +27,11 @@ export const createLayerContainer = (): void => {
   newLayerButtonIcon.className = 'fas fa-file'
   newLayerButton.appendChild(newLayerButtonIcon)
 
+  newLayerButton.addEventListener('click', ()=> {
+      const layer = LayerHandler.addNewLayer()
+      makeLayerEntry(layer)
+  })
+
   let deleteLayerButton = document.createElement('button')
   deleteLayerButton.className = 'toolbox-item'
   let deleteLayerButtonIcon = document.createElement('i')
@@ -51,7 +57,7 @@ export const createLayerContainer = (): void => {
 /**
  * @function makeLayer - creates layer entry
  */
-export const makeLayer = (layer: Layer): void => {
+const makeLayerEntry = (layer: Layer): void => {
     let layerContainer = document.getElementById('layer-container')
 
     let layerEntry = document.createElement('layer')

@@ -133,26 +133,7 @@ function drawGlobalTestBtn(){
     testButton.id = 'global-test-btn'
     testButton.innerText = 'test'
     testButton.addEventListener('click', function(){
-        let layer = new Layer('test layer')
 
-        let options = {
-            worldWidth: 2800,
-            worldHeight: 1400,
-            hexSize: 60,
-            flat: true
-        }
-        let testMap = new HexMap()
-        .setHexSize(options.hexSize)
-        .setFlat(options.flat)
-        .setWorldSize(options.worldWidth, options.worldHeight)
-        .drawHexMap()
-        .align()
-
-        layer.addChild(testMap)
-
-        viewport.addChild(layer)
-
-        Layers.makeLayer(layer)
     })
     document.body.appendChild(testButton)
 }
