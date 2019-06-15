@@ -5,6 +5,7 @@ const loader: any = PIXI.Loader.shared;
 import * as HexMath from './hexMath'
 import { randomColor } from '../util/random'
 import * as HexTile from './hexTile'
+import { sleep } from "../util/sleep";
 
 
 export class HexMap extends PIXI.Container {
@@ -74,25 +75,35 @@ export class HexMap extends PIXI.Container {
         let texture = PIXI.Texture.from(loader.resources['empty'])
         let sprite = new PIXI.Sprite(texture)
 
-        const hexScale = ((2*this.r)/sprite.width)
+        let hexmap = this
 
-        for (let i = 0; i < this.wCount; i++) {
-            for (let j = 0; j < this.hCount; j++) {
-                let hexOptions = {
-                    r: this.r,
-                    h: this.h,
-                    flat: this.flat,
-                    hexScale: hexScale,
-                    oddq: {col:i,row:j},
-                    xTransform: 0,
-                    yTransform: -6*hexScale
+        //TODO refactor ugly fix for issues with rendering
+        sleep(10).then(function(){
+            console.log(texture)
+
+            const hexScale = ((2*hexmap.r)/sprite.width)
+
+            console.log(`scale: ${hexScale} r: ${hexmap.r} sprite.width: ${texture.orig.width}`)
+
+            for (let i = 0; i < hexmap.wCount; i++) {
+                for (let j = 0; j < hexmap.hCount; j++) {
+                    let hexOptions = {
+                        r: hexmap.r,
+                        h: hexmap.h,
+                        flat: hexmap.flat,
+                        hexScale: hexScale,
+                        oddq: {col:i,row:j},
+                        xTransform: 0,
+                        yTransform: -6*hexScale
+                    }
+
+                    let hex = new HexTile.SpriteHex(texture, hexOptions)
+                    hexmap.addChild(hex)
+                    hexmap.hexArray.push(hex)
                 }
-
-                let hex = new HexTile.SpriteHex(texture, hexOptions)
-                this.addChild(hex)
-                this.hexArray.push(hex)
             }
-        }
+        })
+
 
         return this
     }
