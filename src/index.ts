@@ -1,18 +1,19 @@
-import { HexMap } from "./hexMap/hexMap"
 import {initGui} from './gui/gui'
-import {loadTileSetThenDo, tileSetRef} from './tileSet/loader'
+import {loadTileSetThenDo} from './tileSet/loader'
 
 import * as PIXI from "pixi.js"
 import Viewport from "pixi-viewport"
 import "../src/_scss/main.scss"
 import * as style from './_scss/style'
 import * as r from './core/renderer'
+import { addNewLayer } from './layers/layerHandler';
+import { makeLayerEntry } from './layers/layersComponent';
 
 
 export let viewport: any
 
 let options = {
-    worldWidth: 2800,
+    worldWidth: 2600,
     worldHeight: 1400,
     hexSize: 60,
     flat: true,
@@ -69,6 +70,12 @@ function onLoad(): void {
     makeWorldViewport()
     resize()
     window.addEventListener('resize', resize)
-    drawWorld()
     initGui()
+    drawWorld()
+    testSetup()
+}
+
+function testSetup(){
+    let layer = addNewLayer()
+    makeLayerEntry(layer)
 }

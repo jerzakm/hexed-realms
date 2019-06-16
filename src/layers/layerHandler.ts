@@ -1,6 +1,5 @@
 import { viewport } from '..'
 import { Layer } from './layer'
-import { makeLayerEntry } from './layersComponent'
 import { HexMap } from '../hexMap/hexMap';
 
 export const addNewLayer = () => {
@@ -16,12 +15,34 @@ export const addNewLayer = () => {
   .setHexSize(options.hexSize)
   .setFlat(options.flat)
   .setWorldSize(options.worldWidth, options.worldHeight)
-  .drawHexMap()
   .align()
+  .drawHexMap()
 
   layer.addChild(layerMap)
 
   viewport.addChild(layer)
 
   return layer
+}
+
+export const activateLayer = (layer: Layer) => {
+  let hexMap = layer.children[0]
+  if(hexMap instanceof HexMap){
+    for(let hex of hexMap.children){
+      hex.interactive = true
+    }
+  }
+}
+
+export const deactivateLayer = (layerId: string) => {
+  for(let layer of viewport.children) {
+    if(layer instanceof Layer && layer.id.includes(layerId)){
+      let hexMap = layer.children[0]
+      if(hexMap instanceof HexMap){
+        for(let hex of hexMap.children){
+          hex.interactive = false
+        }
+      }
+    }
+  }
 }

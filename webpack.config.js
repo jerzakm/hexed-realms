@@ -4,12 +4,12 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const LinkTypePlugin = require('html-webpack-link-type-plugin').HtmlWebpackLinkTypePlugin
 
 
-let isDevelopment = true
+let isDevelopment = false
 
 const ROOT = path.resolve(__dirname);
 
 module.exports = {
-    mode: "development",
+    mode: "production",
     entry: {
         main: "./src/index.ts"
     },

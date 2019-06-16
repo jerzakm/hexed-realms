@@ -79,11 +79,7 @@ export class HexMap extends PIXI.Container {
 
         //TODO refactor ugly fix for issues with rendering
         sleep(10).then(function(){
-            console.log(texture)
-
             const hexScale = ((2*hexmap.r)/sprite.width)
-
-            console.log(`scale: ${hexScale} r: ${hexmap.r} sprite.width: ${texture.orig.width}`)
 
             for (let i = 0; i < hexmap.wCount; i++) {
                 for (let j = 0; j < hexmap.hCount; j++) {

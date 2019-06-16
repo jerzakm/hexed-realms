@@ -57,7 +57,7 @@ export const createLayerContainer = (): void => {
 /**
  * @function makeLayer - creates layer entry
  */
-const makeLayerEntry = (layer: Layer): void => {
+export const makeLayerEntry = (layer: Layer): void => {
     let layerContainer = document.getElementById('layer-container')
 
     let layerEntry = document.createElement('layer')
@@ -81,42 +81,29 @@ const makeLayerEntry = (layer: Layer): void => {
 
     layerEntry.setAttribute('layerId',`${layer.id}`)
 
-    console.log(layerContainer)
+    if(layerContainer){
+        layerContainer.prepend(layerEntry)
+    }
 
-    layerContainer.appendChild(layerEntry)
+    layerEntry.addEventListener('click', () => {
+        // activates the layer (interactive = true)
+        let cl = layerEntry.classList
+        if(!cl.contains('layer-active')){
+            //find a previously active layer
+            if(layerContainer){
+                for(let layer of Array.from(layerContainer.children)){
+                    if(layer.classList.contains('layer-active')){
+                        //todo fix ugly null escaping
+                        layer.classList.remove('layer-active')
+                        let layerDomValue = layer.getAttribute('layerId')
+                        let layerId = layerDomValue == null ? '' : layerDomValue
+                        LayerHandler.deactivateLayer(layerId)
+                    }
+                }
+            }
+
+            cl.add('layer-active')
+            LayerHandler.activateLayer(layer)
+        }
+    })
 }
-
-`<layers id="layer-window">
-<titlebar>Layers</titlebar>
-<container class="layer-container">
-    <layer>
-        <div class="layer-preview"></div>
-        <label>Layer name</label>
-        <div class="layer-icons">
-            <i class="fas fa-arrow-up"></i>
-            <i class="fas fa-arrow-down"></i>
-        </div>
-    </layer>
-    <layer>
-        <div class="layer-preview"></div>
-        <label>Layer name</label>
-        <div class="layer-icons">
-            <i class="fas fa-arrow-up"></i>
-            <i class="fas fa-arrow-down"></i>
-        </div>
-    </layer>
-    <layer>
-        <div class="layer-preview"></div>
-        <label>Layer name</label>
-        <div class="layer-icons">
-            <i class="fas fa-arrow-up"></i>
-            <i class="fas fa-arrow-down"></i>
-        </div>
-    </layer>
-</container>
-<buttonbar class="layer-window-buttonbar">
-    <button class="toolbox-item" id="new-layer-button"><i class="fas fa-file"></i></button>
-    <button class="toolbox-item" id="delete-layer-button"><i class="fas fa-trash"></i></button>
-    <button class="toolbox-item" id="delete-layer-button"><i class="fas fa-sliders-h"></i></button>
-</buttonbar>
-</layers>`

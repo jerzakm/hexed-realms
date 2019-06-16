@@ -27,7 +27,7 @@ export class SpriteHex extends PIXI.Sprite {
      * @param cube cubic location (x,y,z)
      * @param hexScale sprite scale based on hex dimensions
      * @param xTransform hex relative horizontal position to it's original location
-     * @param yTransform hex relative vertical position to it's original location 
+     * @param yTransform hex relative vertical position to it's original location
      */
     r: number
     h: number
@@ -56,7 +56,7 @@ export class SpriteHex extends PIXI.Sprite {
         this.yTransform = hexOptions.yTransform
 
         this.buttonMode = true
-        this.interactive = true
+        this.interactive = false
 
         this.math()
         this.setupInteraction()
