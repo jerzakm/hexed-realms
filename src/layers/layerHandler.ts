@@ -46,3 +46,11 @@ export const deactivateLayer = (layerId: string) => {
     }
   }
 }
+
+export const removeLayer = (layerId: string) => {
+  for(let layer of viewport.children) {
+    if(layer instanceof Layer && layer.id.includes(layerId)){
+      layer.destroy()
+    }
+  }
+}

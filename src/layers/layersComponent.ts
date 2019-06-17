@@ -38,6 +38,23 @@ export const createLayerContainer = (): void => {
   deleteLayerButtonIcon.className = 'fas fa-trash'
   deleteLayerButton.appendChild(deleteLayerButtonIcon)
 
+  //delete layer button
+  deleteLayerButton.addEventListener('click', () => {
+    for(let layer of Array.from(layerContainer.children)){
+        if(layer.classList.contains('layer-active')){
+            let layerDomValue = layer.getAttribute('layerId')
+            let layerId = layerDomValue == null ? '' : layerDomValue
+            try {
+                LayerHandler.removeLayer(layerId)
+                layer.remove()
+            } catch(err) {
+                console.log('error removing layer?')
+                console.log(err)
+            }
+        }
+    }
+  })
+
   let editLayerButton = document.createElement('button')
   editLayerButton.className = 'toolbox-item'
   let editLayerButtonIcon = document.createElement('i')
