@@ -3,6 +3,7 @@ import * as HexMath from "./hexMath"
 
 import {guiState} from '../gui/gui'
 import { HexMap } from "./hexMap";
+import { GlowFilter } from "pixi-filters";
 const loader: any = PIXI.Loader.shared
 
 interface IHexOptions {
@@ -104,10 +105,14 @@ export class SpriteHex extends PIXI.Sprite {
                     if(guiState.drawMode){
                         hex.texture=PIXI.Texture.from(loader.resources[`${guiState.currentHexTexture}`])
                     }
-                    hex.tint = 0xDDAAAA
+                    // hex.tint = 0xDDAAAA
+                    hex.filters = [
+                        new GlowFilter(20,0,3,0xffffff)
+                    ]
                 }
                 else {
-                    hex.tint =  0xFFFFFF
+                    // hex.tint =  0xFFFFFF
+                    hex.filters = []
                 }
             }
         }
