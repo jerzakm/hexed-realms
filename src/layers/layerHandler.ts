@@ -1,6 +1,7 @@
 import { viewport } from '..'
 import { Layer } from './layer'
-import { HexMap } from '../hexMap/hexMap';
+import { HexMap } from '../hexMap/hexMap'
+import { ifError } from 'assert'
 
 export const addNewLayer = () => {
   let layer = new Layer('New Layer')

@@ -6,8 +6,9 @@ import Viewport from "pixi-viewport"
 import "../src/_scss/main.scss"
 import * as style from './_scss/style'
 import * as r from './core/renderer'
-import { addNewLayer } from './layers/layerHandler';
-import { makeLayerEntry } from './layers/layersComponent';
+import { addNewLayer } from './layers/layerHandler'
+import { makeLayerEntry } from './layers/layersComponent'
+import * as pFilters from 'pixi-filters'
 
 
 export let viewport: any
@@ -30,7 +31,38 @@ function makeWorldViewport()
         .drag({ clampWheel: true, mouseButtons:'right'})
         .wheel({ smooth: 2 })
         .pinch()
+
+
+    //animated water test
+    let displacementSprite = new PIXI.Sprite.from('3.png')
+    let displacementFilter = new PIXI.filters.DisplacementFilter(displacementSprite);
+    displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
+
+    r.stage.addChild(displacementSprite)
+    const sOptions = {
+        amplitude: 90,
+        wavelength: 360.0,
+        speed: 500.0,
+        brightness: 5,
+        radius: -1
+    }
+    const shockwave = new pFilters.ShockwaveFilter([300,300], sOptions)
+    r.stage.filters = [
+        // displacementFilter,
+        // new pFilters.DotFilter(1,5),
+        // new pFilters.GodrayFilter(),
+        // shockwave
+    ]
+
     r.stage.addChild(viewport)
+
+    function animate() {
+        displacementSprite.x += 3;
+        displacementSprite.y += 0;
+        requestAnimationFrame(animate);
+  }
+
+  animate()
 }
 
 function resize()

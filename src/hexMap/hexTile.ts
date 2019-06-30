@@ -78,7 +78,7 @@ export class SpriteHex extends PIXI.Sprite {
     * @description Hex interaction listener
     */
     private setupInteraction(){
-        this.on('pointerdown', () => {
+        this.on('mousedown', () => {
             guiState.drawMode = true
             this.paint()})
             this.on('pointerup', () => { guiState.drawMode = false })
