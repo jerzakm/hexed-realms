@@ -1,8 +1,6 @@
 import {setPaintBrushTools} from './modes/paintbrush'
 import * as Layers from '../layers/layersComponent'
-import { viewport } from '..';
-import { HexMap } from '../hexMap/hexMap';
-import { Layer } from '../layers/layer';
+import { setEraserTools } from './modes/eraser';
 
 const Combokeys = require('combokeys')
 
@@ -86,6 +84,13 @@ function setupToolbox() {
         alt: 'Paint the map with tiles',
         mode: 'paint-brush'
     })
+    //eraser
+    tools.push({
+        name: 'eraser',
+        icon: 'eraser',
+        alt: 'Erase painted tiles',
+        mode: 'eraser'
+    })
 }
 
 function swapMode(mode: string) {
@@ -121,11 +126,10 @@ function drawSelectedToolSettings(mode: string){
         case 'move':
             console.log('move')
             break
+        case 'eraser':
+            setEraserTools()
     }
 }
-
-
-let eventQueue = []
 
 function drawGlobalTestBtn(){
     let testButton = document.createElement('button')

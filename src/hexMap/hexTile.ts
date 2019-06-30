@@ -92,7 +92,7 @@ export class SpriteHex extends PIXI.Sprite {
      * @description hex painting function
      */
     private paint() {
-        if(guiState.mode=='paint-brush'){
+        if(guiState.mode=='paint-brush'||guiState.mode=='eraser'){
             let hexArray = this.parent.hexArray
 
             const originCube = this.cube
@@ -103,7 +103,12 @@ export class SpriteHex extends PIXI.Sprite {
                 const distance = (Math.abs(originCube.x - otherCube.x) + Math.abs(originCube.y - otherCube.y) + Math.abs(originCube.z - otherCube.z)) / 2
                 if(distance <= guiState.brushSize-1){
                     if(guiState.drawMode){
-                        hex.texture=PIXI.Texture.from(loader.resources[`${guiState.currentHexTexture}`])
+                        if(guiState.mode=='paint-brush'){
+                            hex.texture=PIXI.Texture.from(loader.resources[`${guiState.currentHexTexture}`])
+                        }else if(guiState.mode=='eraser') {
+                            console.log(loader.resources)
+                            hex.texture=PIXI.Texture.from(loader.resources[`empty`])
+                        }
                     }
                     // hex.tint = 0xDDAAAA
                     hex.filters = [

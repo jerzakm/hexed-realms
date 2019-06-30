@@ -31,7 +31,7 @@ const drawHotbar = () => {
 }
 
 
-const drawBrushSizeSlider = () => {
+export const drawBrushSizeSlider = () => {
     const brushSliderValue = (): number => {
         //brush size slider values are non linear
         return Math.round(Math.pow(1.0868, parseInt(input.value,10)))
