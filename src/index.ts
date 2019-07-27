@@ -14,8 +14,8 @@ import * as pFilters from 'pixi-filters'
 export let viewport: any
 
 let options = {
-    worldWidth: 2600,
-    worldHeight: 1400,
+    worldWidth: 4600,
+    worldHeight: 3400,
     hexSize: 60,
     flat: true,
     render: drawWorld
@@ -32,37 +32,37 @@ function makeWorldViewport()
         .wheel({ smooth: 2 })
         .pinch()
 
-
-    //animated water test
-    let displacementSprite = new PIXI.Sprite.from('3.png')
-    let displacementFilter = new PIXI.filters.DisplacementFilter(displacementSprite);
-    displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
-
-    r.stage.addChild(displacementSprite)
-    const sOptions = {
-        amplitude: 90,
-        wavelength: 360.0,
-        speed: 500.0,
-        brightness: 5,
-        radius: -1
-    }
-    const shockwave = new pFilters.ShockwaveFilter([300,300], sOptions)
-    r.stage.filters = [
-        // displacementFilter,
-        // new pFilters.DotFilter(1,5),
-        // new pFilters.GodrayFilter(),
-        // shockwave
-    ]
-
     r.stage.addChild(viewport)
 
-    function animate() {
-        displacementSprite.x += 3;
-        displacementSprite.y += 0;
-        requestAnimationFrame(animate);
-  }
 
-  animate()
+//     //animated water test
+//     let displacementSprite = new PIXI.Sprite.from('3.png')
+//     let displacementFilter = new PIXI.filters.DisplacementFilter(displacementSprite);
+//     displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
+
+//     r.stage.addChild(displacementSprite)
+//     const sOptions = {
+//         amplitude: 90,
+//         wavelength: 360.0,
+//         speed: 500.0,
+//         brightness: 5,
+//         radius: -1
+//     }
+//     const shockwave = new pFilters.ShockwaveFilter([300,300], sOptions)
+//     r.stage.filters = [
+//         displacementFilter,
+//         // new pFilters.DotFilter(1,5),
+//         // new pFilters.GodrayFilter(),
+//         // shockwave
+//     ]
+
+//     function animate() {
+//         displacementSprite.x += 3;
+//         displacementSprite.y += 0;
+//         requestAnimationFrame(animate);
+//   }
+
+//   animate()
 }
 
 function resize()
@@ -84,15 +84,6 @@ function drawWorld()
     viewport.moveCorner(0, 0)
     viewport.fitWorld()
     border()
-
-    // let testMap = new HexMap()
-    //     .setHexSize(options.hexSize)
-    //     .setFlat(options.flat)
-    //     .setWorldSize(options.worldWidth, options.worldHeight)
-    //     .drawHexMap()
-    //     .align()
-
-    // viewport.addChild(testMap)
 }
 
 loadTileSetThenDo(onLoad)

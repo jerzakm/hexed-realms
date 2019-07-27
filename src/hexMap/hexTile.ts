@@ -106,7 +106,6 @@ export class SpriteHex extends PIXI.Sprite {
                         if(guiState.mode=='paint-brush'){
                             hex.texture=PIXI.Texture.from(loader.resources[`${guiState.currentHexTexture}`])
                         }else if(guiState.mode=='eraser') {
-                            console.log(loader.resources)
                             hex.texture=PIXI.Texture.from(loader.resources[`empty`])
                         }
                     }

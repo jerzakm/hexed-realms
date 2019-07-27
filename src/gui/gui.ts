@@ -1,6 +1,8 @@
 import {setPaintBrushTools} from './modes/paintbrush'
 import * as Layers from '../layers/layersComponent'
 import { setEraserTools } from './modes/eraser';
+import { viewport } from '..';
+import { renderer } from '../core/renderer';
 
 const Combokeys = require('combokeys')
 
@@ -137,7 +139,24 @@ function drawGlobalTestBtn(){
     testButton.id = 'global-test-btn'
     testButton.innerText = 'test'
     testButton.addEventListener('click', function(){
-
+        // const image = renderer.plugins.extract.image(viewport)
+        // document.body.appendChild(image);
+        renderer.plugins.extract.canvas(viewport).toBlob((b)=> {
+            const a = document.createElement('a')
+            document.body.appendChild(a)
+            a.download = 'hexmap.png'
+            a.href = URL.createObjectURL(b)
+            a.click
+            a.remove()
+        }, 'image/png')
+        // renderer.extract.canvas(sprite).toBlob(function(b){
+        //     var a = document.createElement('a');
+        //     document.body.append(a);
+        //     a.download = fileName;
+        //     a.href = URL.createObjectURL(b);
+        //     a.click();
+        //     a.remove();
+        // }, 'image/png');
     })
     document.body.appendChild(testButton)
 }

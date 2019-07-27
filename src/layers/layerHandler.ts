@@ -7,11 +7,12 @@ export const addNewLayer = () => {
   let layer = new Layer('New Layer')
 
   let options = {
-      worldWidth: 2800,
-      worldHeight: 1400,
+      worldWidth: 4600,
+      worldHeight: 3400,
       hexSize: 60,
       flat: true
   }
+
   let layerMap = new HexMap()
   .setHexSize(options.hexSize)
   .setFlat(options.flat)
