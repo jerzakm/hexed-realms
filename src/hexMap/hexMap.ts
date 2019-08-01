@@ -71,6 +71,35 @@ export class HexMap extends PIXI.Container {
         return this
     }
 
+    drawGrid(){
+        let hexmap = this
+
+        for (let i = 0; i < hexmap.wCount; i++) {
+            for (let j = 0; j < hexmap.hCount; j++) {
+                let hexOptions = {
+                    r: hexmap.r,
+                    h: hexmap.h,
+                    flat: hexmap.flat,
+                    oddq: {col:i,row:j},
+                }
+                const g = new PIXI.Graphics()
+                const pos = HexMath.calcHexLocation(i,j,hexOptions.r,hexOptions.h, hexOptions.flat)
+                g.position.x = pos.x
+                g.position.y = pos.y
+                g.lineStyle(5, 0x000)
+
+                g.drawPolygon(HexMath.calcHexPoints(hexmap.r, hexmap.h, hexmap.flat))
+                g.alpha = 0.3
+
+                hexmap.addChild(g)
+                hexmap.hexArray.push(g)
+            }
+        }
+
+
+        return this
+    }
+
     drawHexMap(){
         let texture = PIXI.Texture.from(loader.resources['empty'])
         let sprite = new PIXI.Sprite(texture)

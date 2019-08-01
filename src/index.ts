@@ -9,6 +9,7 @@ import * as r from './core/renderer'
 import { addNewLayer } from './layers/layerHandler'
 import { makeLayerEntry } from './layers/layersComponent'
 import * as pFilters from 'pixi-filters'
+import { HexMap } from './hexMap/hexMap';
 
 
 export let viewport: any
@@ -84,6 +85,15 @@ function drawWorld()
     viewport.moveCorner(0, 0)
     viewport.fitWorld()
     border()
+
+    let overlay = new HexMap()
+    .setHexSize(options.hexSize)
+    .setFlat(options.flat)
+    .setWorldSize(options.worldWidth, options.worldHeight)
+    .align()
+    .drawGrid()
+
+    viewport.addChild(overlay)
 }
 
 loadTileSetThenDo(onLoad)
